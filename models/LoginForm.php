@@ -1,8 +1,8 @@
 <?php
 namespace application\modules\giinius\models;
 
-Yii::import('gii.components.UserIdentity');
-use \UserIdentity;
+Yii::import('giin\components\UserIdentity');
+use UserIdentity;
 class LoginForm extends \CFormModel
 {
 	public $password;

@@ -1,6 +1,7 @@
 <?php
-
-class UserIdentity extends CUserIdentity
+namespace application\modules\giinius\components;
+use CException;
+class UserIdentity extends \CUserIdentity
 {
 	/**
 	 * Authenticates a user.

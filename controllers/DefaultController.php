@@ -35,7 +35,7 @@ class DefaultController extends \CController
 	 */
 	public function actionLogin()
 	{
-		$model=Yii::createComponent('giinius\models\LoginForm');
+		$model=Yii::createComponent('giin\models\LoginForm');
 
 		// collect user input data
 		if(isset($_POST['LoginForm']))
