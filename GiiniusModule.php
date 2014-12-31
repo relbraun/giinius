@@ -7,11 +7,14 @@
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
+namespace application\modules\giinius;
+use Yii;
+Yii::setPathOfAlias('giin',Yii::getPathOfAlias('application.modules.giinius'));
+Yii::import('CCodeGenerator');
+Yii::import('CCodeModel');
+Yii::import('CCodeFile');
+Yii::import('CCodeForm');
 
-Yii::import('application.modules.giinius.CCodeGenerator');
-Yii::import('application.modules.giinius.CCodeModel');
-Yii::import('application.modules.giinius.CCodeFile');
-Yii::import('application.modules.giinius.CCodeForm');
 
 /**
  * GiiModule is a module that provides Web-based code generation capabilities.
@@ -69,36 +72,36 @@ Yii::import('application.modules.giinius.CCodeForm');
  * @package system.gii
  * @since 1.1.2
  */
-class GiiniusModule extends CWebModule
+class GiiniusModule extends \CWebModule
 {
-	/**
-	 * @var string the password that can be used to access GiiModule.
-	 * If this property is set false, then GiiModule can be accessed without password
-	 * (DO NOT DO THIS UNLESS YOU KNOW THE CONSEQUENCE!!!)
-	 */
+//	/**
+//	 * @var string the password that can be used to access GiiModule.
+//	 * If this property is set false, then GiiModule can be accessed without password
+//	 * (DO NOT DO THIS UNLESS YOU KNOW THE CONSEQUENCE!!!)
+//	 */
 	public $password;
-	/**
-	 * @var array the IP filters that specify which IP addresses are allowed to access GiiModule.
-	 * Each array element represents a single filter. A filter can be either an IP address
-	 * or an address with wildcard (e.g. 192.168.0.*) to represent a network segment.
-	 * If you want to allow all IPs to access gii, you may set this property to be false
-	 * (DO NOT DO THIS UNLESS YOU KNOW THE CONSEQUENCE!!!)
-	 * The default value is array('127.0.0.1', '::1'), which means GiiModule can only be accessed
-	 * on the localhost.
-	 */
+//	/**
+//	 * @var array the IP filters that specify which IP addresses are allowed to access GiiModule.
+//	 * Each array element represents a single filter. A filter can be either an IP address
+//	 * or an address with wildcard (e.g. 192.168.0.*) to represent a network segment.
+//	 * If you want to allow all IPs to access gii, you may set this property to be false
+//	 * (DO NOT DO THIS UNLESS YOU KNOW THE CONSEQUENCE!!!)
+//	 * The default value is array('127.0.0.1', '::1'), which means GiiModule can only be accessed
+//	 * on the localhost.
+//	 */
 	public $ipFilters=array('127.0.0.1','::1');
-	/**
-	 * @var array a list of path aliases that refer to the directories containing code generators.
-	 * The directory referred by a single path alias may contain multiple code generators, each stored
-	 * under a sub-directory whose name is the generator name.
-	 * Defaults to array('application.gii').
-	 */
-	public $generatorPaths=array('application.gii');
-	/**
-	 * @var integer the permission to be set for newly generated code files.
-	 * This value will be used by PHP chmod function.
-	 * Defaults to 0666, meaning the file is read-writable by all users.
-	 */
+//	/**
+//	 * @var array a list of path aliases that refer to the directories containing code generators.
+//	 * The directory referred by a single path alias may contain multiple code generators, each stored
+//	 * under a sub-directory whose name is the generator name.
+//	 * Defaults to array('application.gii').
+//	 */
+	public $generatorPaths=array('application.giinius');
+//	/**
+//	 * @var integer the permission to be set for newly generated code files.
+//	 * This value will be used by PHP chmod function.
+//	 * Defaults to 0666, meaning the file is read-writable by all users.
+//	 */
 	public $newFileMode=0666;
 	/**
 	 * @var integer the permission to be set for newly generated directories.
@@ -106,12 +109,14 @@ class GiiniusModule extends CWebModule
 	 * Defaults to 0777, meaning the directory can be read, written and executed by all users.
 	 */
 	public $newDirMode=0777;
-
+//
+        public $controllerNamespace='application\modules\giinius\controllers';
+//
 	private $_assetsUrl;
-
-	/**
-	 * Initializes the gii module.
-	 */
+//
+//	/**
+//	 * Initializes the gii module.
+//	 */
 	public function init()
 	{
 		parent::init();
@@ -128,20 +133,20 @@ class GiiniusModule extends CWebModule
 			'widgetFactory' => array(
 				'class'=>'CWidgetFactory',
 				'widgets' => array()
-			)
+			),
 		), false);
-                Yii::setPathOfAlias('giinius','application.modules.giinius');
-		$this->generatorPaths[]='giinius.generators';
+                $p=Yii::getPathOfAlias('giinius');
+		$this->generatorPaths[]='giin.generators';
 		$this->controllerMap=$this->findGenerators();
 	}
-
-	/**
-	 * @return string the base URL that contains all published asset files of gii.
-	 */
+//
+//	/**
+//	 * @return string the base URL that contains all published asset files of gii.
+//	 */
 	public function getAssetsUrl()
 	{
 		if($this->_assetsUrl===null)
-			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('gii.assets'));
+			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('giinius.assets'));
 		return $this->_assetsUrl;
 	}
 
@@ -152,22 +157,22 @@ class GiiniusModule extends CWebModule
 	{
 		$this->_assetsUrl=$value;
 	}
-
-	/**
-	 * Performs access check to gii.
-	 * This method will check to see if user IP and password are correct if they attempt
-	 * to access actions other than "default/login" and "default/error".
-	 * @param CController $controller the controller to be accessed.
-	 * @param CAction $action the action to be accessed.
-	 * @return boolean whether the action should be executed.
-	 */
+//
+//	/**
+//	 * Performs access check to gii.
+//	 * This method will check to see if user IP and password are correct if they attempt
+//	 * to access actions other than "default/login" and "default/error".
+//	 * @param CController $controller the controller to be accessed.
+//	 * @param CAction $action the action to be accessed.
+//	 * @return boolean whether the action should be executed.
+//	 */
 	public function beforeControllerAction($controller, $action)
 	{
 		if(parent::beforeControllerAction($controller, $action))
 		{
 			$route=$controller->id.'/'.$action->id;
 			if(!$this->allowIp(Yii::app()->request->userHostAddress) && $route!=='default/error')
-				throw new CHttpException(403,"You are not allowed to access this page.");
+				throw new \CHttpException(403,"You are not allowed to access this page.");
 
 			$publicPages=array(
 				'default/login',
@@ -197,11 +202,11 @@ class GiiniusModule extends CWebModule
 		}
 		return false;
 	}
-
-	/**
-	 * Finds all available code generators and their code templates.
-	 * @return array
-	 */
+//
+//	/**
+//	 * Finds all available code generators and their code templates.
+//	 * @return array
+//	 */
 	protected function findGenerators()
 	{
 		$generators=array();
@@ -222,7 +227,7 @@ class GiiniusModule extends CWebModule
 					if(is_file("$path/$name/$className.php"))
 					{
 						$generators[$name]=array(
-							'class'=>"$alias.$name.$className",
+							'class'=>  str_replace('.', '\\', $alias)."\\$name\\$className",
 						);
 					}
 

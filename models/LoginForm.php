@@ -1,8 +1,9 @@
 <?php
+namespace application\modules\giinius\models;
 
 Yii::import('gii.components.UserIdentity');
-
-class LoginForm extends CFormModel
+use \UserIdentity;
+class LoginForm extends \CFormModel
 {
 	public $password;
 

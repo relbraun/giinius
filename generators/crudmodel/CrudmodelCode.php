@@ -6,11 +6,11 @@
  */
 
 /**
- * Description of GiiniusGenerator
+ * Description of GiineiusCode
  *
  * @author Kalman
  */
-class GiiniusGenerator
+class CrudmodelCode
 {
     //put your code here
 }

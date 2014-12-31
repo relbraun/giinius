@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
+namespace application\modules\giinius;
 /**
  * CCodeForm represents the form for collecting code generation parameters.
  *
@@ -16,7 +16,7 @@
  * @package system.gii
  * @since 1.1.2
  */
-class CCodeForm extends CActiveForm
+class CCodeForm extends \CActiveForm
 {
 	/**
 	 * @var CCodeModel the code model associated with the form

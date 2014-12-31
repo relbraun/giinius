@@ -1,6 +1,8 @@
 <?php
+namespace application\modules\giinius\controllers;
+use Yii;
 
-class DefaultController extends CController
+class DefaultController extends \CController
 {
 	public $layout='/layouts/column1';
 
@@ -33,7 +35,7 @@ class DefaultController extends CController
 	 */
 	public function actionLogin()
 	{
-		$model=Yii::createComponent('gii.models.LoginForm');
+		$model=Yii::createComponent('giinius\models\LoginForm');
 
 		// collect user input data
 		if(isset($_POST['LoginForm']))
@@ -41,7 +43,7 @@ class DefaultController extends CController
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->createUrl('gii/default/index'));
+				$this->redirect(Yii::app()->createUrl('giinius/default/index'));
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
@@ -53,6 +55,6 @@ class DefaultController extends CController
 	public function actionLogout()
 	{
 		Yii::app()->user->logout(false);
-		$this->redirect(Yii::app()->createUrl('gii/default/index'));
+		$this->redirect(Yii::app()->createUrl('giinius/default/index'));
 	}
 }

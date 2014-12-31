@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
+namespace application\modules\giinius;
 /**
  * CCodeFile represents a code file being generated.
  *

@@ -7,7 +7,7 @@
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
+namespace application\modules\giinius;
 /**
  * CCodeGenerator is the base class for code generator classes.
  *
@@ -26,7 +26,7 @@
  * @package system.gii
  * @since 1.1.2
  */
-class CCodeGenerator extends CController
+class CCodeGenerator extends \CController
 {
 	/**
 	 * @var string the layout to be used by the generator. Defaults to 'generator'.
@@ -88,7 +88,7 @@ class CCodeGenerator extends CController
 			));
 		}
 		else
-			throw new CHttpException(404,'Unable to find the code you requested.');
+			throw new \CHttpException(404,'Unable to find the code you requested.');
 	}
 
 	/**
@@ -106,8 +106,8 @@ class CCodeGenerator extends CController
 			$file=$model->files[$_GET['id']];
 			if(!in_array($file->type,array('php', 'txt','js','css')))
 				$diff=false;
-			else if($file->operation===CCodeFile::OP_OVERWRITE)
-				$diff=TextDiff::compare(file_get_contents($file->path), $file->content);
+			else if($file->operation===\CCodeFile::OP_OVERWRITE)
+				$diff=\TextDiff::compare(file_get_contents($file->path), $file->content);
 			else
 				$diff='';
 
@@ -117,7 +117,7 @@ class CCodeGenerator extends CController
 			));
 		}
 		else
-			throw new CHttpException(404,'Unable to find the code you requested.');
+			throw new \CHttpException(404,'Unable to find the code you requested.');
 	}
 
 	/**
@@ -129,7 +129,7 @@ class CCodeGenerator extends CController
 	{
 		if($this->_viewPath===null)
 		{
-			$class=new ReflectionClass(get_class($this));
+			$class=new \ReflectionClass(get_class($this));
 			$this->_viewPath=dirname($class->getFileName()).DIRECTORY_SEPARATOR.'views';
 		}
 		return $this->_viewPath;
