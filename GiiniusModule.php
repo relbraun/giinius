@@ -7,11 +7,11 @@
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-
-Yii::import('system.gii.CCodeGenerator');
-Yii::import('system.gii.CCodeModel');
-Yii::import('system.gii.CCodeFile');
-Yii::import('system.gii.CCodeForm');
+Yii::setPathOfAlias('giin', Yii::getPathOfAlias('application.modules.giinius'));
+Yii::import('giin.CCodeGenerator');
+Yii::import('giin.CCodeModel');
+Yii::import('giin.CCodeFile');
+Yii::import('giin.CCodeForm');
 
 /**
  * GiiModule is a module that provides Web-based code generation capabilities.
@@ -69,7 +69,7 @@ Yii::import('system.gii.CCodeForm');
  * @package system.gii
  * @since 1.1.2
  */
-class GiiModule extends CWebModule
+class GiiniusModule extends CWebModule
 {
 	/**
 	 * @var string the password that can be used to access GiiModule.
@@ -130,9 +130,9 @@ class GiiModule extends CWebModule
 				'widgets' => array()
 			)
 		), false);
-		$this->generatorPaths[]='gii.generators';
+		$this->generatorPaths[]='giin.generators';
 		$this->controllerMap=$this->findGenerators();
-		
+
 	}
 
 	/**
@@ -141,7 +141,7 @@ class GiiModule extends CWebModule
 	public function getAssetsUrl()
 	{
 		if($this->_assetsUrl===null)
-			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('gii.assets'));
+			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('giin.assets'));
 		return $this->_assetsUrl;
 	}
 
