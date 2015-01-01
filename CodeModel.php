@@ -30,9 +30,10 @@
  * @property string $templatePath The directory that contains the template files.
  * @property string $stickyFile The file path that stores the sticky attribute values.
  *
- * @author Ariel Braun <relbraun@gmail.com>
+ * @author Qiang Xue <qiang.xue@gmail.com>
  * @version $Id$
  * @package system.gii
+ * @since 1.1.2
  */
 abstract class CodeModel extends CFormModel
 {
