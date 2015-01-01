@@ -1,6 +1,6 @@
 <?php
 
-class CrudCode extends CCodeModel
+class CrudmodelCode extends CodeModel
 {
 	public $model;
 	public $controller;

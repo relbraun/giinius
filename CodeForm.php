@@ -16,7 +16,7 @@
  * @package system.gii
  * @since 1.1.2
  */
-class CCodeForm extends CActiveForm
+class CodeForm extends CActiveForm
 {
 	/**
 	 * @var CCodeModel the code model associated with the form
@@ -48,7 +48,7 @@ EOD;
 		foreach($this->model->getTemplates() as $i=>$template)
 			$templates[$i]=basename($template).' ('.$template.')';
 
-		$this->renderFile(Yii::getPathOfAlias('gii.views.common.generator').'.php',array(
+		$this->renderFile(Yii::getPathOfAlias('giin.views.common.generator').'.php',array(
 			'model'=>$this->model,
 			'templates'=>$templates,
 		));

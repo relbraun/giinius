@@ -19,7 +19,7 @@
  * @package system.gii
  * @since 1.1.2
  */
-class CCodeFile extends CComponent
+class CodeFile extends CComponent
 {
 	const OP_NEW='new';
 	const OP_OVERWRITE='overwrite';

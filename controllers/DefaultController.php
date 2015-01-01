@@ -2,7 +2,7 @@
 
 class DefaultController extends CController
 {
-	public $layout='/layouts/column1';
+	public $layout='//layouts/column1';
 
 	public function getPageTitle()
 	{
@@ -33,7 +33,7 @@ class DefaultController extends CController
 	 */
 	public function actionLogin()
 	{
-		$model=Yii::createComponent('gii.models.LoginForm');
+		$model=Yii::createComponent('giin.models.LoginForm');
 
 		// collect user input data
 		if(isset($_POST['LoginForm']))

@@ -1,6 +1,6 @@
 <?php
 
-class ControllerGenerator extends CCodeGenerator
+class ControllerGenerator extends CodeGenerator
 {
-	public $codeModel='gii.generators.controller.ControllerCode';
+	public $codeModel='giin.generators.controller.ControllerCode';
 }

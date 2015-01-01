@@ -26,7 +26,7 @@
  * @package system.gii
  * @since 1.1.2
  */
-class CCodeGenerator extends CController
+class CodeGenerator extends CController
 {
 	/**
 	 * @var string the layout to be used by the generator. Defaults to 'generator'.
@@ -98,7 +98,7 @@ class CCodeGenerator extends CController
 	 */
 	public function actionDiff()
 	{
-		Yii::import('gii.components.TextDiff');
+		Yii::import('giin.components.TextDiff');
 
 		$model=$this->prepare();
 		if(isset($_GET['id']) && isset($model->files[$_GET['id']]))

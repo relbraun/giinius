@@ -1,4 +1,4 @@
-<?php $this->beginContent('gii.views.layouts.main'); ?>
+<?php $this->beginContent('giin.views.layouts.main'); ?>
 <div class="container">
 	<div id="content">
 		<?php echo $content; ?>

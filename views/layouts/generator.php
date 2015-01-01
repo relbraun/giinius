@@ -1,4 +1,4 @@
-<?php $this->beginContent('gii.views.layouts.main'); ?>
+<?php $this->beginContent('giin.views.layouts.main'); ?>
 <div class="container">
 	<div class="span-4">
 		<div id="sidebar">
@@ -7,7 +7,7 @@
 		)); ?>
 			<ul>
 				<?php foreach($this->module->controllerMap as $name=>$config): ?>
-				<li><?php echo CHtml::link(ucwords(CHtml::encode($name).' generator'),array('/gii/'.$name));?></li>
+				<li><?php echo CHtml::link(ucwords(CHtml::encode($name).' generator'),array('/giinius/'.$name));?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php $this->endWidget(); ?>

@@ -1,6 +1,6 @@
 <?php
 
-class ControllerCode extends CCodeModel
+class ControllerCode extends CodeModel
 {
 	public $controller;
 	public $baseClass='Controller';

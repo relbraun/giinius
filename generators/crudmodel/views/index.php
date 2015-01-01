@@ -1,6 +1,6 @@
 <?php
 $class=get_class($model);
-Yii::app()->clientScript->registerScript('gii.crud',"
+Yii::app()->clientScript->registerScript('giin.crudmodel',"
 $('#{$class}_controller').change(function(){
 	$(this).data('changed',$(this).val()!='');
 });
@@ -19,7 +19,7 @@ $('#{$class}_model').bind('keyup change', function(){
 
 <p>This generator generates a controller and views that implement CRUD operations for the specified data model.</p>
 
-<?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
+<?php $form=$this->beginWidget('CodeForm', array('model'=>$model)); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'model'); ?>

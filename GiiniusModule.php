@@ -8,10 +8,10 @@
  * @license http://www.yiiframework.com/license/
  */
 Yii::setPathOfAlias('giin', Yii::getPathOfAlias('application.modules.giinius'));
-Yii::import('giin.CCodeGenerator');
-Yii::import('giin.CCodeModel');
-Yii::import('giin.CCodeFile');
-Yii::import('giin.CCodeForm');
+Yii::import('giin.CodeGenerator');
+Yii::import('giin.CodeModel');
+Yii::import('giin.CodeFile');
+Yii::import('giin.CodeForm');
 
 /**
  * GiiModule is a module that provides Web-based code generation capabilities.

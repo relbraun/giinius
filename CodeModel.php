@@ -35,7 +35,7 @@
  * @package system.gii
  * @since 1.1.2
  */
-abstract class CCodeModel extends CFormModel
+abstract class CodeModel extends CFormModel
 {
 	const STATUS_NEW=1;
 	const STATUS_PREVIEW=2;
