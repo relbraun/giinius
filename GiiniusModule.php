@@ -241,4 +241,13 @@ class GiiniusModule extends CWebModule
 		}
 		return $generators;
 	}
+
+        protected function buildDbTbl()
+        {
+            $db=Yii::app()->db;
+            $tbl_name='giinius_builder';
+            if(!in_array($tbl_name, $db->getSchema()->tables)){
+                
+            }
+        }
 }
