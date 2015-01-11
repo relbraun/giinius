@@ -1,7 +1,7 @@
 <?php
 /**
  * The following variables are available in this template:
- * - $this: the CrudCode object
+ * - $this: the CrudmodelCode object
  */
 ?>
 <?php echo "<?php\n"; ?>
