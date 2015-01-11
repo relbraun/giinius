@@ -1,15 +1,15 @@
 <?php
 /**
- * CCodeModel class file.
+ * CodeModel class file.
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
+ * @author Ariel Braun <relbraun@gmail.com>
  * @link http://www.yiiframework.com/
  * @copyright Copyright &copy; 2008-2011 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
 /**
- * CCodeModel is the base class for model classes that are used to generate code.
+ * CodeModel is the base class for model classes that are used to generate code.
  *
  * Each code generator should have at least one code model class that extends from this class.
  * The purpose of a code model is to represent user-supplied parameters and use them to
@@ -18,7 +18,7 @@
  * Derived classes should implement the {@link prepare} method whose main task is to
  * fill up the {@link files} property based on the user parameters.
  *
- * The {@link files} property should be filled with a set of {@link CCodeFile} instances,
+ * The {@link files} property should be filled with a set of {@link CodeFile} instances,
  * each representing a single code file to be generated.
  *
  * CCodeModel implements the feature of "sticky attributes". A sticky attribute is an attribute

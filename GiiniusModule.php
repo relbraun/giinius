@@ -132,7 +132,7 @@ class GiiniusModule extends CWebModule
 		), false);
 		$this->generatorPaths[]='giin.generators';
 		$this->controllerMap=$this->findGenerators();
-
+		$this->buildDbTbl();
 	}
 
 	/**
@@ -244,10 +244,22 @@ class GiiniusModule extends CWebModule
 
         protected function buildDbTbl()
         {
-            $db=Yii::app()->db;
+	        /** @var CDbConnection $db */
+	        $db=Yii::app()->db;
             $tbl_name='giinius_builder';
-            if(!in_array($tbl_name, $db->getSchema()->tables)){
-                
+
+            if(!in_array($tbl_name, $db->getSchema()->getTableNames())){
+                $schema=$db->getSchema();
+	            $sql=$schema->createTable($tbl_name,array(
+		            'id'=>'pk',
+		            'model'=>'string',
+		            'attribute'=>'string',
+		            'field_type'=>'string',
+		            'css'=>'string',
+		            'options'=>'text',
+	            ));
+	            $command=$db->createCommand($sql);
+	            $command->execute();
             }
         }
 }

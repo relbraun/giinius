@@ -2,7 +2,7 @@
 
 class DefaultController extends CController
 {
-	public $layout='//layouts/column1';
+	public $layout='column1';
 
 	public function getPageTitle()
 	{
