@@ -258,8 +258,13 @@ class GiiniusModule extends CWebModule
 		            'css'=>'string',
 		            'options'=>'text',
 	            ));
+                    $index=$schema->createIndex('KEY_'.$tbl_name, $tbl_name, 'model,attribute', true);
 	            $command=$db->createCommand($sql);
-	            $command->execute();
+	            if(!$command->execute())
+                        throw new CDbException('The system didn\'t succeded to build the new table: '.$tbl_name);
+                    if(!$db->createCommand($index)->execute())
+                        throw new CException('The system didn\'t succeded to build the new table: '. $tbl_name);
+
             }
         }
 }

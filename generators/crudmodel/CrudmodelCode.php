@@ -224,6 +224,11 @@ class CrudmodelCode extends CodeModel
  */
 	public function generateActiveField($modelClass,$column)
 	{
+            /** @var $builder GiiniusBuilder */$builder =  GiiniusBuilder::model()->findByAttributes(array(
+                'model' => $modelClass,
+                'attribute' => $column->name,
+            ));
+            if(!$builder){
 		if($column->type==='boolean')
 			return "\$form->checkBox(\$model,'{$column->name}')";
 		else if(stripos($column->dbType,'text')!==false)
@@ -244,6 +249,21 @@ class CrudmodelCode extends CodeModel
 				return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength))";
 			}
 		}
+            }
+            else{
+                $maxLength=$column->size;
+                $return='';
+                switch($builder->field_type){
+                    case 'text':
+                        return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => {$builder->css}))";
+                        break;
+                    case 'checkbox':
+                        return "\$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
+                        break;
+                    case 'dropdown':
+                        return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => {$builder->css}))";
+                }
+            }
 	}
 
 	public function guessNameColumn($columns)
