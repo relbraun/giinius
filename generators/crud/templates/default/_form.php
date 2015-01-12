@@ -1,8 +1,9 @@
 <?php
 /**
  * The following variables are available in this template:
- * - $this: the CrudCode object
+ * @var $this: the CrudCode object
  */
+/* @var $this CrudCode object */
 ?>
 <?php echo "<?php\n"; ?>
 /* @var $this <?php echo $this->getControllerClass(); ?> */

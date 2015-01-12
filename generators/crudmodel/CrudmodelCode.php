@@ -167,12 +167,22 @@ class CrudmodelCode extends CodeModel
 	{
 		return $this->_table;
 	}
-
+/**
+ *
+ * @param string $modelClass
+ * @param CDbColumnSchema $column
+ * @return string
+ */
 	public function generateInputLabel($modelClass,$column)
 	{
 		return "CHtml::activeLabelEx(\$model,'{$column->name}')";
 	}
-
+/**
+ *
+ * @param string $modelClass
+ * @param CDbColumnSchema $column
+ * @return string
+ */
 	public function generateInputField($modelClass,$column)
 	{
 		if($column->type==='boolean')
@@ -196,12 +206,22 @@ class CrudmodelCode extends CodeModel
 			}
 		}
 	}
-
+/**
+ *
+ * @param string $modelClass
+ * @param CDbColumnSchema $column
+ * @return string
+ */
 	public function generateActiveLabel($modelClass,$column)
 	{
 		return "\$form->labelEx(\$model,'{$column->name}')";
 	}
-
+/**
+ *
+ * @param string $modelClass
+ * @param CDbColumnSchema $column
+ * @return string
+ */
 	public function generateActiveField($modelClass,$column)
 	{
 		if($column->type==='boolean')
