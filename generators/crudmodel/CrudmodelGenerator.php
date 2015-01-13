@@ -27,4 +27,37 @@ EOD;
             $cs=app()->getClientScript();
             $cs->registerScript(__FILE__, $script);
         }
+
+        protected function buildDbTbl()
+        {
+	        /** @var CDbConnection $db */
+	        $db=Yii::app()->db;
+            $tbl_name='giinius_builder';
+
+            if(!in_array($tbl_name, $db->getSchema()->getTableNames())){
+                $schema=$db->getSchema();
+	            $sql=$schema->createTable($tbl_name,array(
+		            'id'=>'pk',
+		            'model'=>'string',
+		            'attribute'=>'string',
+		            'field_type'=>'string',
+		            'css'=>'string',
+		            'options'=>'text',
+	            ));
+                    $index=$schema->createIndex('KEY_'.$tbl_name, $tbl_name, 'model,attribute', true);
+	            $command=$db->createCommand($sql);
+	            if(!$command->execute())
+                        throw new CDbException('The system didn\'t succeded to build the new table: '.$tbl_name);
+                    if(!$db->createCommand($index)->execute())
+                        throw new CException('The system didn\'t succeded to build the new table: '. $tbl_name);
+                    return true;
+
+            }
+        }
+
+        protected function beforeAction($action)
+        {
+            if($this->buildDbTbl())
+                return parent::beforeAction($action);
+        }
 }
