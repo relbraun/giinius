@@ -15,6 +15,10 @@ class CrudmodelCode extends CodeModel
      */
     public $controller;
     public $baseControllerClass = 'Controller';
+    /**
+     * @var bool If the form intented to be inline form
+     */
+    public $inline = false;
 
     /**
      *
@@ -61,10 +65,10 @@ class CrudmodelCode extends CodeModel
             array('model', 'validateModel'),
             array('baseControllerClass', 'sticky'),
             //modelCode
-            array('tablePrefix, baseClass, tableName, modelClass, modelPath', 'filter', 'filter' => 'trim'),
-            array('connectionId, tableName, modelPath, baseClass', 'required'),
-            array('tablePrefix, tableName, modelPath', 'match', 'pattern' => '/^(\w+[\w\.]*|\*?|\w+\.\*)$/', 'message' => '{attribute} should only contain word characters, dots, and an optional ending asterisk.'),
-            array('tableName', 'validateTableName', 'skipOnError' => true),
+            array('tablePrefix, baseClass, modelClass, modelPath', 'filter', 'filter' => 'trim'),
+            array('connectionId, modelPath, baseClass', 'required'),
+            array('tablePrefix, modelPath', 'match', 'pattern' => '/^(\w+[\w\.]*|\*?|\w+\.\*)$/', 'message' => '{attribute} should only contain word characters, dots, and an optional ending asterisk.'),
+            //array('tableName', 'validateTableName', 'skipOnError' => true),
             array('tablePrefix, modelClass, baseClass', 'match', 'pattern' => '/^[a-zA-Z_]\w*$/', 'message' => '{attribute} should only contain word characters.'),
             array('modelPath', 'validateModelPath', 'skipOnError' => true),
             array('baseClass, modelClass', 'validateReservedWord', 'skipOnError' => true),
@@ -162,14 +166,14 @@ class CrudmodelCode extends CodeModel
             'tableName' => $tableName,
             'modelClass' => $className,
             'columns' => $this->_table->columns,
-            'labels' => $this->generateLabels($table),
-            'rules' => $this->generateRules($table),
+            'labels' => $this->generateLabels($this->_table),
+            'rules' => $this->generateRules($this->_table),
             'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
             'connectionId' => $this->connectionId,
         );
         $this->files[] = new CCodeFile(
                 Yii::getPathOfAlias($this->model) . '.php', $this->render($templatePath . '/model.php', $params)
-        );  
+        );
     }
 //model template
 //    public function prepare()
@@ -332,7 +336,8 @@ class CrudmodelCode extends CodeModel
      */
     public function generateActiveLabel($modelClass, $column)
     {
-        return "\$form->labelEx(\$model,'{$column->name}')";
+        $inline=$this->inline ? 'sr-only' : '';
+        return "\$form->labelEx(\$model,'{$column->name}', array('class'=>'$inline'))";
     }
 
     /**
@@ -351,7 +356,7 @@ class CrudmodelCode extends CodeModel
             if ($column->type === 'boolean')
                 return "\$form->checkBox(\$model,'{$column->name}')";
             else if (stripos($column->dbType, 'text') !== false)
-                return "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50))";
+                return "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'form-control'))";
             else {
                 if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name))
                     $inputField = 'passwordField';
@@ -363,7 +368,7 @@ class CrudmodelCode extends CodeModel
                 else {
                     if (($size = $maxLength = $column->size) > 60)
                         $size = 60;
-                    return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength))";
+                    return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'form-control'))";
                 }
             }
         }
@@ -372,13 +377,13 @@ class CrudmodelCode extends CodeModel
             $return = '';
             switch ($builder->field_type) {
                 case 'text':
-                    return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => {$builder->css}))";
+                    return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
                     break;
                 case 'checkbox':
                     return "\$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
                     break;
                 case 'dropdown':
-                    return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => {$builder->css}))";
+                    return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
             }
         }
     }
@@ -692,7 +697,41 @@ class CrudmodelCode extends CodeModel
 
     public function generateDropdownOptions($model, $attribute)
     {
+        $builder = GiiniusBuilder::model()->findByAttributes(array(
+            'model' => $model,
+            'attribute' => $attribute,
+        ));
+        if(!$builder)
+            return;
+        $arr = preg_split('/\n/', $builder->options);
+        $s='';
+        foreach($arr as $opt){
+            $s.="$opt => $opt,\n";
+        }
+        return <<<DAT
+  \n\n public function get{$attribute}Data()
+   {
+        return array(
+            $s
+           );
+   }
+DAT;
+    }
 
+    public function save()
+    {
+        $ret = true;
+        if(isset($_POST['GiiniusBuilder'])){
+            foreach($_POST['GiiniusBuilder'] as $i=> $post){
+                $model=  new GiiniusBuilder;
+                $model->attributes = $post;
+                if($model->save()){
+
+                }
+            }
+
+        }
+        return parent::save();
     }
 
     /**
