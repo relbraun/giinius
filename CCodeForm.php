@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -12,11 +12,10 @@
  * CCodeForm represents the form for collecting code generation parameters.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */
-class CodeForm extends CActiveForm
+class CCodeForm extends CActiveForm
 {
 	/**
 	 * @var CCodeModel the code model associated with the form
@@ -48,7 +47,7 @@ EOD;
 		foreach($this->model->getTemplates() as $i=>$template)
 			$templates[$i]=basename($template).' ('.$template.')';
 
-		$this->renderFile(Yii::getPathOfAlias('giin.views.common.generator').'.php',array(
+		$this->renderFile(Yii::getPathOfAlias('gii.views.common.generator').'.php',array(
 			'model'=>$this->model,
 			'templates'=>$templates,
 		));

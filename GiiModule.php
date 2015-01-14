@@ -4,14 +4,14 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
-Yii::setPathOfAlias('giin', Yii::getPathOfAlias('application.modules.giinius'));
-Yii::import('giin.CodeGenerator');
-Yii::import('giin.CodeModel');
-Yii::import('giin.CodeFile');
-Yii::import('giin.CodeForm');
+
+Yii::import('system.gii.CCodeGenerator');
+Yii::import('system.gii.CCodeModel');
+Yii::import('system.gii.CCodeFile');
+Yii::import('system.gii.CCodeForm');
 
 /**
  * GiiModule is a module that provides Web-based code generation capabilities.
@@ -65,11 +65,10 @@ Yii::import('giin.CodeForm');
  * @property string $assetsUrl The base URL that contains all published asset files of gii.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */
-class GiiniusModule extends CWebModule
+class GiiModule extends CWebModule
 {
 	/**
 	 * @var string the password that can be used to access GiiModule.
@@ -115,6 +114,7 @@ class GiiniusModule extends CWebModule
 	public function init()
 	{
 		parent::init();
+		Yii::setPathOfAlias('gii',dirname(__FILE__));
 		Yii::app()->setComponents(array(
 			'errorHandler'=>array(
 				'class'=>'CErrorHandler',
@@ -130,9 +130,8 @@ class GiiniusModule extends CWebModule
 				'widgets' => array()
 			)
 		), false);
-		$this->generatorPaths[]='giin.generators';
+		$this->generatorPaths[]='gii.generators';
 		$this->controllerMap=$this->findGenerators();
-		$this->buildDbTbl();
 	}
 
 	/**
@@ -141,7 +140,7 @@ class GiiniusModule extends CWebModule
 	public function getAssetsUrl()
 	{
 		if($this->_assetsUrl===null)
-			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('giin.assets'));
+			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('gii.assets'));
 		return $this->_assetsUrl;
 	}
 
@@ -159,6 +158,7 @@ class GiiniusModule extends CWebModule
 	 * to access actions other than "default/login" and "default/error".
 	 * @param CController $controller the controller to be accessed.
 	 * @param CAction $action the action to be accessed.
+	 * @throws CHttpException if access denied
 	 * @return boolean whether the action should be executed.
 	 */
 	public function beforeControllerAction($controller, $action)
@@ -241,30 +241,4 @@ class GiiniusModule extends CWebModule
 		}
 		return $generators;
 	}
-
-        protected function buildDbTbl()
-        {
-	        /** @var CDbConnection $db */
-	        $db=Yii::app()->db;
-            $tbl_name='giinius_builder';
-
-            if(!in_array($tbl_name, $db->getSchema()->getTableNames())){
-                $schema=$db->getSchema();
-	            $sql=$schema->createTable($tbl_name,array(
-		            'id'=>'pk',
-		            'model'=>'string',
-		            'attribute'=>'string',
-		            'field_type'=>'string',
-		            'css'=>'string',
-		            'options'=>'text',
-	            ));
-                    $index=$schema->createIndex('KEY_'.$tbl_name, $tbl_name, 'model,attribute', true);
-	            $command=$db->createCommand($sql);
-	            if(!$command->execute())
-                        throw new CDbException('The system didn\'t succeded to build the new table: '.$tbl_name);
-                    if(!$db->createCommand($index)->execute())
-                        throw new CException('The system didn\'t succeded to build the new table: '. $tbl_name);
-
-            }
-        }
 }

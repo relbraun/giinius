@@ -4,7 +4,7 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008-2011 Yii Software LLC
+ * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,11 +22,10 @@
  * @property string $viewPath The view path of the generator.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id$
  * @package system.gii
  * @since 1.1.2
  */
-class CodeGenerator extends CController
+class CCodeGenerator extends CController
 {
 	/**
 	 * @var string the layout to be used by the generator. Defaults to 'generator'.
@@ -98,7 +97,7 @@ class CodeGenerator extends CController
 	 */
 	public function actionDiff()
 	{
-		Yii::import('giin.components.TextDiff');
+		Yii::import('gii.components.TextDiff');
 
 		$model=$this->prepare();
 		if(isset($_GET['id']) && isset($model->files[$_GET['id']]))
@@ -106,7 +105,7 @@ class CodeGenerator extends CController
 			$file=$model->files[$_GET['id']];
 			if(!in_array($file->type,array('php', 'txt','js','css')))
 				$diff=false;
-			else if($file->operation===CCodeFile::OP_OVERWRITE)
+			elseif($file->operation===CCodeFile::OP_OVERWRITE)
 				$diff=TextDiff::compare(file_get_contents($file->path), $file->content);
 			else
 				$diff='';
