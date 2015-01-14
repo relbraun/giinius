@@ -5,7 +5,7 @@ class CrudmodelCode extends CodeModel
 
     /**
      *
-     * @var string The model class
+     * @var string The model class with path alias
      */
     public $model;
 
@@ -18,7 +18,7 @@ class CrudmodelCode extends CodeModel
 
     /**
      *
-     * @var string  The model class
+     * @var string  The model class without path alias
      */
     private $_modelClass;
 
@@ -168,8 +168,8 @@ class CrudmodelCode extends CodeModel
             'connectionId' => $this->connectionId,
         );
         $this->files[] = new CCodeFile(
-                Yii::getPathOfAlias($this->modelPath) . '/' . $className . '.php', $this->render($templatePath . '/model.php', $params)
-        );
+                Yii::getPathOfAlias($this->model) . '.php', $this->render($templatePath . '/model.php', $params)
+        );  
     }
 //model template
 //    public function prepare()
