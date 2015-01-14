@@ -10,6 +10,8 @@
  * @property string $field_type
  * @property string $css
  * @property string $options
+ * @property string $label The field label
+ * @property boolean $placeholder Whether show the placeholder
  */
 class GiiniusBuilder extends CActiveRecord
 {
@@ -31,6 +33,7 @@ class GiiniusBuilder extends CActiveRecord
 		return array(
 			array('model, attribute, field_type', 'required'),
 			array('model, attribute', 'length', 'max'=>50),
+                        array('placeholder', 'numerical', 'integerOnly'=>true),
 			array('field_type', 'length', 'max'=>25),
 			array('css', 'length', 'max'=>100),
 			array('options', 'safe'),
@@ -63,6 +66,8 @@ class GiiniusBuilder extends CActiveRecord
 			'field_type' => 'Field Type',
 			'css' => 'Css',
 			'options' => 'Options',
+                        'label' => 'Label',
+                        'placeholder' => 'Placeholder',
 		);
 	}
 
