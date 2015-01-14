@@ -152,4 +152,9 @@ foreach($columns as $name=>$column)
 			'criteria'=>$criteria,
 		));
 	}
+<?php
+ foreach($columns as $name=>$column){
+     $this->generateDropdownOptions($modelClass,$name);
+ }
+?>
 }
