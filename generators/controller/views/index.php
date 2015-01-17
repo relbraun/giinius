@@ -3,7 +3,7 @@
 <p>This generator helps you to quickly generate a new controller class,
 one or several controller actions and their corresponding views.</p>
 
-<?php $form=$this->beginWidget('CodeForm', array('model'=>$model)); ?>
+<?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'controller'); ?>

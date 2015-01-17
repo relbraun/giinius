@@ -20,7 +20,7 @@ $('#{$class}_model').bind('keyup change', function(){
 <p>This generator generates a controller and views that implement CRUD operations for the specified data model.</p>
 <p>The form builder enable you to provide specified field type to each attribute in the model.</p>
 
-<?php $form=$this->beginWidget('CodeForm', array('model'=>$model)); ?>
+<?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'model'); ?>

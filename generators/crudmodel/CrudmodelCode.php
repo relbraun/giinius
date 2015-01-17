@@ -1,6 +1,6 @@
 <?php
 
-class CrudmodelCode extends CodeModel
+class CrudmodelCode extends CCodeModel
 {
 
     /**

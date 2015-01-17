@@ -11,7 +11,7 @@ function app()
 
 Yii::import('giin.generators.crudmodel.GiiniusBuilder');
 
-class CrudmodelGenerator extends CodeGenerator
+class CrudmodelGenerator extends CCodeGenerator
 {
 
     public $codeModel = 'giin.generators.crudmodel.CrudmodelCode';
