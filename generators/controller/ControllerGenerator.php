@@ -2,5 +2,5 @@
 
 class ControllerGenerator extends CCodeGenerator
 {
-	public $codeModel='giin.generators.controller.ControllerCode';
+	public $codeModel='gii.generators.controller.ControllerCode';
 }

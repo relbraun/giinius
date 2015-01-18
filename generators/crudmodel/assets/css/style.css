@@ -1,0 +1,19 @@
+/*
+    Document   : style
+    Created on : 18/01/2015, 01:25:42
+    Author     : Kalman
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.x-remover{
+    float: right;
+    border: solid 1px black;
+    border-radius: 2px;
+    text-decoration: none;
+    background-color: buttonface;
+}
+.attribute-wraper{
+    padding: 12px;
+    border: 1px solid #ccc;
+}
+

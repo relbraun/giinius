@@ -1,6 +1,6 @@
 <?php
 
-Yii::import('giin.components.UserIdentity');
+Yii::import('gii.components.UserIdentity');
 
 class LoginForm extends CFormModel
 {

@@ -1,5 +1,7 @@
 <?php
 $class=get_class($model);
+$ajaxUrl = $this->createUrl('formBuilder');
+Yii::app()->clientScript->registerCssFile($this->assetsUrl . '/css/style.css');
 Yii::app()->clientScript->registerScript('giin.crudmodel',"
 $('#{$class}_controller').change(function(){
 	$(this).data('changed',$(this).val()!='');
@@ -12,6 +14,13 @@ $('#{$class}_model').bind('keyup change', function(){
 			id=id.substring(0,1).toLowerCase()+id.substring(1);
 		controller.val(id);
 	}
+});
+$('#{$class}_model').on('change', function(){
+    var self = $(this);
+    $.ajax('{$ajaxUrl}',{data:{model_name:self.val()},success:function(data){
+                $('div.buttons').before(data);
+            }
+        });
 });
 ");
 ?>

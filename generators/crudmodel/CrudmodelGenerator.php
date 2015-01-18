@@ -1,36 +1,72 @@
 <?php
-
-/**
- *
- * @return CWebApplication
- */
+Yii::setPathOfAlias('giin', __DIR__);
 function app()
 {
     return Yii::app();
 }
 
-Yii::import('giin.generators.crudmodel.GiiniusBuilder');
+require_once 'GiiniusBuilder.php';
+/**
+ *
+ * @return CWebApplication
+ */
+
 
 class CrudmodelGenerator extends CCodeGenerator
 {
+    private $_assetsUrl;
 
-    public $codeModel = 'giin.generators.crudmodel.CrudmodelCode';
+    public $codeModel = 'giin.CrudmodelCode';
 
     public function actionFormBuilder($model_name)
     {
         $models = GiiniusBuilder::model()->findAllByAttributes(array('model' => $model_name));
         if (!$models) {
-            $this->renderPartial('error');
+            if(!Yii::autoload($model_name))
+                return;
+            $m=new $model_name;
+            if(!$m){
+                 $this->render('error');
+                 return;
+            }
+            $tbl=Yii::app()->db->schema->getTable($m->tableName());
+            foreach($tbl->columns as $col){
+                 $mod=new GiiniusBuilder;
+                 $mod->attribute=$col->name;
+                 $models[]=$mod;
+            }
         }
-        foreach ($models as $field) {
-            $this->render('formBuilder', array('field' => $field));
-        }
-        $script = <<<EOD
-   $('')
-EOD;
-        $cs = app()->getClientScript();
-        $cs->registerScript(__FILE__, $script);
+        $this->renderPartial('formBuilder', array('models' => $models));
     }
+
+    public function actionIndex()
+	{
+		$model=$this->prepare();
+		if($model->files!=array() && isset($_POST['generate'], $_POST['answers']))
+		{
+			$model->answers=$_POST['answers'];
+			$model->status=$model->save() ? CCodeModel::STATUS_SUCCESS : CCodeModel::STATUS_ERROR;
+		}
+
+		$this->render('index',array(
+			'model'=>$model,
+		));
+	}
+
+        public function getAssetsUrl()
+	{
+		if($this->_assetsUrl===null)
+			$this->_assetsUrl=Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('giin.assets'));
+		return $this->_assetsUrl;
+	}
+
+	/**
+	 * @param string $value the base URL that contains all published asset files of gii.
+	 */
+	public function setAssetsUrl($value)
+	{
+		$this->_assetsUrl=$value;
+	}
 
     protected function buildDbTbl()
     {

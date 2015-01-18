@@ -1,20 +1,22 @@
 <?php
 /* @var $this CrudmodelGenerator */
 /* @var $form CActiveForm */
+/* @var $field GiiniusBuilder */
 
 ?>
 <div class="giinius-form-wrapper form">
+
     <?php
-        $form =  $this->beginWidget('CActiveForm', array(
-            'id' => 'giinius_form_builder',
-        ));
+    foreach ($models as $field) {
+            $this->renderPartial('_form', array('field' => $field));
+        }
     ?>
 
-
-    <div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
-	</div>
-
-    <?php $this->endWidget(); ?>
-
 </div><!-- form -->
+<script>
+    (function($){
+        $('.x-remover').click(function(){
+            $(this).parent().remove();
+        });
+    })(jQuery);
+</script>
