@@ -18,7 +18,7 @@ $('#{$class}_model').bind('keyup change', function(){
 $('#{$class}_model').on('change', function(){
     var self = $(this);
     $.ajax('{$ajaxUrl}',{data:{model_name:self.val()},success:function(data){
-                $('div.buttons').before(data);
+                $('div.giinius-fill').html(data);
             }
         });
 });
@@ -70,5 +70,6 @@ $('#{$class}_model').on('change', function(){
 		</div>
 		<?php echo $form->error($model,'baseControllerClass'); ?>
 	</div>
+        <div class="giinius-fill"></div>
 
 <?php $this->endWidget(); ?>

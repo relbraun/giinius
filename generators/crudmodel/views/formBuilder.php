@@ -7,8 +7,11 @@
 <div class="giinius-form-wrapper form">
 
     <?php
+    $id=1;
     foreach ($models as $field) {
-            $this->renderPartial('_form', array('field' => $field));
+            $id = $field->id ? $field->id : $id;
+            $this->renderPartial('_form', array('field' => $field, 'id' => $id));
+            $id++;
         }
     ?>
 

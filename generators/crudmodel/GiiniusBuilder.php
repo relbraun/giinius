@@ -103,7 +103,16 @@ class GiiniusBuilder extends CActiveRecord
 
         public function attrOptions()
         {
-            
+
+        }
+
+        public function getFieldtypeOptions()
+        {
+            return array(
+                'text' => 'text',
+                'checkbox' => 'checkbox',
+                'dropdown' => 'dropdown',
+            );
         }
 
 	/**
