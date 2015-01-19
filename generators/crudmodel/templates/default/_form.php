@@ -17,7 +17,7 @@ $inline=$this->inline ? 'form-inline' : '';
 <?php echo "<?php \$form=\$this->beginWidget('CActiveForm', array(
 	'id'=>'".$this->class2id($this->modelClass)."-form',
 	'enableAjaxValidation'=>false,
-        'class'=>$inline
+        'class'=>'$inline',
 )); ?>\n"; ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>

@@ -71,6 +71,7 @@ class CrudmodelCode extends CCodeModel
             array('baseControllerClass', 'validateReservedWord', 'skipOnError' => true),
             array('model', 'validateModel'),
             array('baseControllerClass', 'sticky'),
+            array('builder', 'safe'),
             //modelCode
             array('tablePrefix, baseClass, modelClass, modelPath', 'filter', 'filter' => 'trim'),
             array('connectionId, modelPath, baseClass', 'required'),
@@ -178,8 +179,9 @@ class CrudmodelCode extends CCodeModel
             'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
             'connectionId' => $this->connectionId,
         );
+        $modelPath=strpos($this->model, '.')>0 ? $this->model: $this->modelPath;
         $this->files[] = new CCodeFile(
-                Yii::getPathOfAlias($this->model) . '.php', $this->render($templatePath . '/model.php', $params)
+                Yii::getPathOfAlias($modelPath . '/' . $this->_modelClass) . '.php', $this->render($templatePath . '/model.php', $params)
         );
     }
 
@@ -381,6 +383,7 @@ class CrudmodelCode extends CCodeModel
             $maxLength = $column->size;
             $return = '';
             foreach ($this->builder as $i => $builder) {
+                $builder=(object)$builder;
                 switch ($builder->field_type) {
                     case 'text':
                         return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";

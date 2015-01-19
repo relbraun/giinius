@@ -125,10 +125,12 @@ class CrudmodelGenerator extends CCodeGenerator
                                 $giinius=  GiiniusBuilder::model()->findByPk($i);
                                 if($giinius){
                                     $giinius->attributes=$builder;
+                                    $giinius->model=$model->model;
                                 }
                                 else{
                                     $giinius=new GiiniusBuilder;
                                     $giinius->attributes=$builder;
+                                    $giinius->model=$model->model;
                                 }
                                 if(!$giinius->save()){
                                     Yii::log('giinius.giiniusBuilder',$giinius->model.":{$giinius->attribute}".' did not save');

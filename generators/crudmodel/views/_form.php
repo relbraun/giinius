@@ -41,7 +41,7 @@ $form = new CActiveForm($this);
 
     <div class="row">
 		<?php echo $form->labelEx($field,'options'); ?>
-		<?php echo $form->textField($field,"[$id]options"); ?>
+		<?php echo $form->textArea($field,"[$id]options"); ?>
 		<div class="tooltip">
 
 		</div>
