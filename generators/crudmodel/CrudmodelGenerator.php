@@ -31,9 +31,11 @@ class CrudmodelGenerator extends CCodeGenerator
             }
             $tbl=Yii::app()->db->schema->getTable($m->tableName());
             foreach($tbl->columns as $col){
+                if(!$col->autoIncrement){
                  $mod=new GiiniusBuilder;
                  $mod->attribute=$col->name;
                  $models[]=$mod;
+                }
             }
         }
         $this->renderPartial('formBuilder', array('models' => $models));
@@ -102,5 +104,44 @@ class CrudmodelGenerator extends CCodeGenerator
         if ($this->buildDbTbl())
             return parent::beforeAction($action);
     }
+
+    /**
+	 * Prepares the code model.
+	 */
+	protected function prepare()
+	{
+		if($this->codeModel===null)
+			throw new CException(get_class($this).'.codeModel property must be specified.');
+		$modelClass=Yii::import($this->codeModel,true);
+		$model=new $modelClass;
+		$model->loadStickyAttributes();
+		if(isset($_POST[$modelClass]))
+		{
+			$model->attributes=$_POST[$modelClass];
+			$model->status=CCodeModel::STATUS_PREVIEW;
+                        if(isset($_POST['GiiniusBuilder'])){
+                            $model->builder=$_POST['GiiniusBuilder'];
+                            foreach($model->builder as $i=>$builder){
+                                $giinius=  GiiniusBuilder::model()->findByPk($i);
+                                if($giinius){
+                                    $giinius->attributes=$builder;
+                                }
+                                else{
+                                    $giinius=new GiiniusBuilder;
+                                    $giinius->attributes=$builder;
+                                }
+                                if(!$giinius->save()){
+                                    Yii::log('giinius.giiniusBuilder',$giinius->model.":{$giinius->attribute}".' did not save');
+                                }
+                            }
+                        }
+			if($model->validate())
+			{
+				$model->saveStickyAttributes();
+				$model->prepare();
+			}
+		}
+		return $model;
+	}
 
 }
