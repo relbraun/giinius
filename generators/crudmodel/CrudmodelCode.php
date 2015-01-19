@@ -15,6 +15,7 @@ class CrudmodelCode extends CCodeModel
      */
     public $controller;
     public $baseControllerClass = 'Controller';
+
     /**
      * @var bool If the form intented to be inline form
      */
@@ -50,6 +51,12 @@ class CrudmodelCode extends CCodeModel
      * Each element represents the code of the one relation in one AR class.
      */
     protected $relations;
+
+    /**
+     *
+     * @var array List of GiiniusBuilder models that include all current model fields
+     */
+    public $builder = array();
 
     //todo
 
@@ -175,6 +182,7 @@ class CrudmodelCode extends CCodeModel
                 Yii::getPathOfAlias($this->model) . '.php', $this->render($templatePath . '/model.php', $params)
         );
     }
+
 //model template
 //    public function prepare()
 //    {
@@ -336,7 +344,7 @@ class CrudmodelCode extends CCodeModel
      */
     public function generateActiveLabel($modelClass, $column)
     {
-        $inline=$this->inline ? 'sr-only' : '';
+        $inline = $this->inline ? 'sr-only' : '';
         return "\$form->labelEx(\$model,'{$column->name}', array('class'=>'$inline'))";
     }
 
@@ -348,11 +356,8 @@ class CrudmodelCode extends CCodeModel
      */
     public function generateActiveField($modelClass, $column)
     {
-        /** @var $builder GiiniusBuilder */$builder = GiiniusBuilder::model()->findByAttributes(array(
-            'model' => $modelClass,
-            'attribute' => $column->name,
-        ));
-        if (!$builder) {
+
+        if (!$this->builder) {
             if ($column->type === 'boolean')
                 return "\$form->checkBox(\$model,'{$column->name}')";
             else if (stripos($column->dbType, 'text') !== false)
@@ -375,15 +380,17 @@ class CrudmodelCode extends CCodeModel
         else {
             $maxLength = $column->size;
             $return = '';
-            switch ($builder->field_type) {
-                case 'text':
-                    return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
-                    break;
-                case 'checkbox':
-                    return "\$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
-                    break;
-                case 'dropdown':
-                    return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
+            foreach ($this->builder as $i => $builder) {
+                switch ($builder->field_type) {
+                    case 'text':
+                        return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        break;
+                    case 'checkbox':
+                        return "\$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
+                        break;
+                    case 'dropdown':
+                        return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
+                }
             }
         }
     }
@@ -408,11 +415,6 @@ class CrudmodelCode extends CCodeModel
     /**
      * @todo ModelCode
      */
-
-
-
-
-
     public function validateTableName($attribute, $params)
     {
         $invalidTables = array();
@@ -701,11 +703,11 @@ class CrudmodelCode extends CCodeModel
             'model' => $model,
             'attribute' => $attribute,
         ));
-        if(!$builder)
+        if (!$builder)
             return;
         $arr = preg_split('/\n/', $builder->options);
-        $s='';
-        foreach($arr as $opt){
+        $s = '';
+        foreach ($arr as $opt) {
             $s.="$opt => $opt,\n";
         }
         return <<<DAT
@@ -721,15 +723,14 @@ DAT;
     public function save()
     {
         $ret = true;
-        if(isset($_POST['GiiniusBuilder'])){
-            foreach($_POST['GiiniusBuilder'] as $i=> $post){
-                $model=  new GiiniusBuilder;
+        if (isset($_POST['GiiniusBuilder'])) {
+            foreach ($_POST['GiiniusBuilder'] as $i => $post) {
+                $model = new GiiniusBuilder;
                 $model->attributes = $post;
-                if($model->save()){
+                if ($model->save()) {
 
                 }
             }
-
         }
         return parent::save();
     }
