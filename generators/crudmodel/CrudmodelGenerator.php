@@ -119,9 +119,10 @@ class CrudmodelGenerator extends CCodeGenerator
 		{
 			$model->attributes=$_POST[$modelClass];
 			$model->status=CCodeModel::STATUS_PREVIEW;
-                        if(isset($_POST['GiiniusBuilder'])){
-                            $model->builder=$_POST['GiiniusBuilder'];
-                            foreach($model->builder as $i=>$builder){
+
+                        if(isset($_POST['GiiniusBuilder']) ){
+                            $post=$_POST['GiiniusBuilder'];
+                            foreach($post as $i=>$builder){
                                 $giinius=  GiiniusBuilder::model()->findByPk($i);
                                 if($giinius){
                                     $giinius->attributes=$builder;
@@ -137,6 +138,8 @@ class CrudmodelGenerator extends CCodeGenerator
                                 }
                             }
                         }
+            $giiniusBuilder= GiiniusBuilder::model()->findAllByAttributes(array('model' => $model->model));
+            $model->builder=$giiniusBuilder;
 			if($model->validate())
 			{
 				$model->saveStickyAttributes();

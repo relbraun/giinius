@@ -383,8 +383,8 @@ class CrudmodelCode extends CCodeModel
         else {
             $maxLength = $column->size;
             $return = '';
-            foreach ($this->builder as $i => $builder) {
-                $builder=(object)$builder;
+            $builder = GiiniusBuilder::model()->findByAttributes(array('model' => $this->model, 'attribute' => $column->name));
+
                 switch ($builder->field_type) {
                     case 'text':
                         return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
@@ -395,7 +395,7 @@ class CrudmodelCode extends CCodeModel
                     case 'dropdown':
                         return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
                 }
-            }
+
         }
     }
 
@@ -708,7 +708,7 @@ class CrudmodelCode extends CCodeModel
             'attribute' => $attribute,
         ));
         if (!$builder)
-            return;
+            return 'gfdgdfgdgdfgdg';
         $arr = preg_split('/\n/', $builder->options);
         $s = '';
         foreach ($arr as $opt) {

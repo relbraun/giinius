@@ -33,10 +33,10 @@ class GiiniusBuilder extends CActiveRecord
 		return array(
 			array('model, attribute, field_type', 'required'),
 			array('model, attribute', 'length', 'max'=>50),
-                        array('placeholder', 'numerical', 'integerOnly'=>true),
+            array('placeholder', 'numerical', 'integerOnly'=>true),
 			array('field_type', 'length', 'max'=>25),
 			array('css', 'length', 'max'=>100),
-			array('options', 'safe'),
+			array('options, label', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, model, attribute, field_type, css, options', 'safe', 'on'=>'search'),
