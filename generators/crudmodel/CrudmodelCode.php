@@ -41,7 +41,7 @@ class CrudmodelCode extends CCodeModel
      *
      * @var string Todo: it is like the $_modelClass above.
      */
-    public $modelClass;
+    //public $modelClass;
     public $modelPath = 'application.models';
     public $baseClass = 'CActiveRecord';
     public $buildRelations = true;
@@ -384,7 +384,7 @@ class CrudmodelCode extends CCodeModel
             $maxLength = $column->size;
             $return = '';
             $builder = GiiniusBuilder::model()->findByAttributes(array('model' => $this->model, 'attribute' => $column->name));
-
+            if($builder){
                 switch ($builder->field_type) {
                     case 'text':
                         return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
@@ -394,8 +394,11 @@ class CrudmodelCode extends CCodeModel
                         break;
                     case 'dropdown':
                         return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
+                        break;
+                    case 'email':
+                        return "\$form->emailField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
                 }
-
+            }
         }
     }
 
@@ -708,20 +711,26 @@ class CrudmodelCode extends CCodeModel
             'attribute' => $attribute,
         ));
         if (!$builder)
-            return 'gfdgdfgdgdfgdg';
+            return '';
+        if(!$builder->options)
+            return;
         $arr = preg_split('/\n/', $builder->options);
         $s = '';
         foreach ($arr as $opt) {
-            $s.="$opt => $opt,\n";
+            $s.="'$opt' => '$opt',\n\t\t\t";
         }
-        return <<<DAT
-  \n\n public function get{$attribute}Data()
+        if($s){
+        return
+  "\n\n public function get{$attribute}Data()
    {
         return array(
-            $s
+            ".trim($s)."
            );
-   }
-DAT;
+   \t}\n";
+
+        }
+        else
+            return '';
     }
 
     public function save()
@@ -756,4 +765,8 @@ DAT;
         return $component instanceof CDbConnection;
     }
 
+    public function setModelClass($value)
+    {
+        $this->_modelClass = $value;
+    }
 }

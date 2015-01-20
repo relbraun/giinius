@@ -154,7 +154,8 @@ foreach($columns as $name=>$column)
 	}
 <?php
  foreach($columns as $name=>$column){
-     $this->generateDropdownOptions($modelClass,$name);
+    echo $this->generateDropdownOptions($modelClass,$name);
+     //echo 'sdfdsfsbdnfgnfn';
  }
 ?>
 }
