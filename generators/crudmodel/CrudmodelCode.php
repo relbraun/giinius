@@ -161,7 +161,7 @@ class CrudmodelCode extends CCodeModel
             if (is_file($templatePath . '/' . $file) && CFileHelper::getExtension($file) === 'php' && $file !== 'controller.php' && $file !== 'model.php') {
                 $rendered = $this->render($templatePath . '/' . $file);
                 $this->files[] = new CCodeFile(
-                        $this->viewPath . DIRECTORY_SEPARATOR . $file, $this->render($templatePath . '/' . $file)
+                        $this->viewPath . DIRECTORY_SEPARATOR . $file, $rendered
                 );
             }
         }
