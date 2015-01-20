@@ -726,16 +726,16 @@ DAT;
 
     public function save()
     {
-        $ret = true;
-        if (isset($_POST['GiiniusBuilder'])) {
-            foreach ($_POST['GiiniusBuilder'] as $i => $post) {
-                $model = new GiiniusBuilder;
-                $model->attributes = $post;
-                if ($model->save()) {
-
-                }
-            }
-        }
+//        $ret = true;
+//        if (isset($_POST['GiiniusBuilder'])) {
+//            foreach ($_POST['GiiniusBuilder'] as $i => $post) {
+//                $model = new GiiniusBuilder;
+//                $model->attributes = $post;
+//                if ($model->save()) {
+//
+//                }
+//            }
+//        }
         return parent::save();
     }
 
