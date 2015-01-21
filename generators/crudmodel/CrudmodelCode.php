@@ -389,16 +389,27 @@ class CrudmodelCode extends CCodeModel
             if($builder){
                 switch ($builder->field_type) {
                     case 'text':
-                        return "\$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        return "echo \$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
                         break;
                     case 'checkbox':
-                        return "\$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
+                        return "echo \$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
                         break;
                     case 'dropdown':
-                        return "\$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
+                        return "echo \$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
                         break;
                     case 'email':
-                        return "\$form->emailField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        return "echo \$form->emailField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                    case 'hidden':
+                        return "echo \$form->hiddenField(\$model, '{$column->name}')";
+                    case 'multiselect':
+                        return "echo \$form->dropDownList(\$model, '{$column->name}[]', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}', 'multiple' => 'multiple'))";
+                    case 'date':
+                        return "\$this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                                        'model' => \$model,
+                                        'attribute' => '{$column->name}',
+                                        'htmlOptions' => array(
+                                            'class' => 'form-control {$builder->css}',
+                                        )));";
                 }
             }
         }

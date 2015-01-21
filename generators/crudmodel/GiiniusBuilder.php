@@ -113,6 +113,9 @@ class GiiniusBuilder extends CActiveRecord
                 'checkbox' => 'checkbox',
                 'dropdown' => 'dropdown',
                 'email' => 'email',
+                'hidden' => 'hidden',
+                'multiselect' => 'multiselect',
+                'date' => 'date',
             );
         }
 

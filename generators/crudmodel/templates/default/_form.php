@@ -34,7 +34,7 @@ foreach($this->tableSchema->columns as $column)
 ?>
 	<div class="form-group">
 		<?php echo "<?php echo ".$this->generateActiveLabel($this->modelClass,$column)."; ?>\n"; ?>
-		<?php echo "<?php echo ".$this->generateActiveField($this->modelClass,$column)."; ?>\n"; ?>
+		<?php echo "<?php ".$this->generateActiveField($this->modelClass,$column)."; ?>\n"; ?>
 		<?php echo "<?php echo \$form->error(\$model,'{$column->name}'); ?>\n"; ?>
 	</div>
 
