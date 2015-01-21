@@ -348,6 +348,8 @@ class CrudmodelCode extends CCodeModel
     public function generateActiveLabel($modelClass, $column)
     {
         $inline = $this->inline ? 'sr-only' : '';
+        $inline.=' control-label';
+        $inline=trim($inline);
         return "\$form->labelEx(\$model,'{$column->name}', array('class'=>'$inline'))";
     }
 
