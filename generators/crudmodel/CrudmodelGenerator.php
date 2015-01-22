@@ -87,6 +87,7 @@ class CrudmodelGenerator extends CCodeGenerator
                 'options' => 'text',
                 'label' => 'string',
                 'placeholder' => 'boolean',
+                'sorter' => 'integer',
             ));
             $index = $schema->createIndex('KEY_' . $tbl_name, $tbl_name, 'model,attribute', true);
             $command = $db->createCommand($sql);

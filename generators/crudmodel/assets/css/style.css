@@ -5,6 +5,8 @@
     Description:
         Purpose of the stylesheet follows.
 */
+/***********Bootstrap**************/
+
 .x-remover{
     float: right;
     border: solid 1px black;
@@ -15,5 +17,21 @@
 .attribute-wraper{
     padding: 12px;
     border: 1px solid #ccc;
+    margin-bottom: 3px;
+    margin-top: 3px;
+    border-radius: 5px;
+    background-color: lightgray;
+}
+.giinius-form-wrapper ul{
+    padding-left: 0;
+}
+
+.giinius-form-wrapper li{
+    list-style: none;
+}
+/**********Sortable****************/
+.ui-state-highlight{
+    border: 2px dashed #ccc;
+    min-height: 200px;
 }
 

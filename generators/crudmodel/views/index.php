@@ -2,6 +2,7 @@
 $class=get_class($model);
 $ajaxUrl = $this->createUrl('formBuilder');
 Yii::app()->clientScript->registerCssFile($this->assetsUrl . '/css/style.css');
+Yii::app()->clientScript->registerCoreScript('jquery.ui');
 Yii::app()->clientScript->registerScript('giin.crudmodel',"
 $('#{$class}_controller').change(function(){
 	$(this).data('changed',$(this).val()!='');
@@ -17,6 +18,14 @@ $('#{$class}_model').bind('keyup change', function(){
 });
 $('#{$class}_model').on('change', function(){
     var self = $(this);
+    $.ajax('{$ajaxUrl}',{data:{model_name:self.val()},success:function(data){
+                $('div.giinius-fill').html(data);
+            }
+        });
+});
+$('#giinius-form-loader').click(function(e){
+    e.preventDefault();
+    var self = $('#{$class}_model');
     $.ajax('{$ajaxUrl}',{data:{model_name:self.val()},success:function(data){
                 $('div.giinius-fill').html(data);
             }
@@ -70,6 +79,9 @@ $('#{$class}_model').on('change', function(){
 		</div>
 		<?php echo $form->error($model,'baseControllerClass'); ?>
 	</div>
+<div>
+    <button id="giinius-form-loader">Load Form</button>
+</div>
         <div class="giinius-fill"></div>
 
 <?php $this->endWidget(); ?>

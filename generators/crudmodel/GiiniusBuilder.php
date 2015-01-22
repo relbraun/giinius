@@ -12,6 +12,7 @@
  * @property string $options
  * @property string $label The field label
  * @property boolean $placeholder Whether show the placeholder
+ * @property int $sorter The ordering of the fields
  */
 class GiiniusBuilder extends CActiveRecord implements IBehavior
 {
@@ -114,6 +115,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
     {
         return array(
             'text' => 'text',
+            'password' => 'password',
             'textarea' => 'textarea',
             'checkbox' => 'checkbox',
             'dropdown' => 'dropdown',

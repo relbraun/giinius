@@ -3,7 +3,10 @@
  * The following variables are available in this template:
  * - $this: the CrudmodelCode object
  */
+/* @var $this CrudmodelCode */
+
 $inline=$this->inline ? 'form-inline' : '';
+$enctype = $this->isEnctypeForm() ? "'enctype' => 'multipart/form-data'," : '';
 ?>
 <?php echo "<?php\n"; ?>
 /* @var $this <?php echo $this->getControllerClass(); ?> */
@@ -19,6 +22,7 @@ $inline=$this->inline ? 'form-inline' : '';
 	'enableAjaxValidation'=>false,
         'htmlOptions'=>array(
             'class' => '$inline',
+            $enctype
          ),
 )); ?>\n"; ?>
 

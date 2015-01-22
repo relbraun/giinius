@@ -6,6 +6,7 @@
 
 $form = new CActiveForm($this);
 ?>
+<li>
 <div class="attribute-wraper">
     <a class="x-remover" href="javascript:;">x</a>
     <div class="row">
@@ -58,4 +59,6 @@ $form = new CActiveForm($this);
 		</div>
 		<?php echo $form->error($field,'label'); ?>
 	</div>
+    <?php echo $form->hiddenField($field,"[$id]sorter"); ?>
 </div>
+</li>

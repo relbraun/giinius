@@ -48,7 +48,7 @@ class CrudmodelCode extends CCodeModel
      */
     //public $modelClass;
     public $modelPath = 'application.models';
-    public $baseClass = 'CActiveRecord';
+    public $baseClass = 'GiiniusActiveRecord';
     public $buildRelations = true;
 
     /**
@@ -197,6 +197,9 @@ class CrudmodelCode extends CCodeModel
         $modelPath=strpos($this->model, '.')>0 ? $this->model: $this->modelPath;
         $this->files[] = new CCodeFile(
                 Yii::getPathOfAlias($modelPath . '/' . $this->_modelClass) . '.php', $this->render($templatePath . '/model.php', $params)
+        );
+        $this->files[] = new CCodeFile(
+            Yii::getPathOfAlias($modelPath . '/' . $this->baseClass) . '.php', $this->render($templatePath . '/activeRecord.php', $params)
         );
     }
 
@@ -405,6 +408,9 @@ class CrudmodelCode extends CCodeModel
                     case 'text':
                         return "echo \$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
                         break;
+                    case 'password':
+                        return "echo \$form->passwordField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        break;
                     case 'textarea':
                         return "echo \$form->textarea(\$model, '{$column->name}', array('class' => 'form-control {$builder->css}'))";
                         break;
@@ -552,8 +558,9 @@ class CrudmodelCode extends CCodeModel
         $integers = array();
         $numerical = array();
         $length = array();
+        $email = array();
         $safe = array();
-        foreach ($table->columns as $column) {
+        foreach ($this->_columns as $column) {
             if ($column->autoIncrement)
                 continue;
             $r = !$column->allowNull && $column->defaultValue === null;
@@ -567,9 +574,14 @@ class CrudmodelCode extends CCodeModel
                 $length[$column->size][] = $column->name;
             else if (!$column->isPrimaryKey && !$r)
                 $safe[] = $column->name;
+            if(isset($column->builder->field_type) && $column->builder->field_type=='email'){
+                $email[]=$column->name;
+            }
         }
         if ($required !== array())
             $rules[] = "array('" . implode(', ', $required) . "', 'required')";
+        if ($email !== array())
+            $rules[] = "array('" . implode(', ', $email) . "', 'email')";
         if ($integers !== array())
             $rules[] = "array('" . implode(', ', $integers) . "', 'numerical', 'integerOnly'=>true)";
         if ($numerical !== array())
@@ -808,5 +820,15 @@ class CrudmodelCode extends CCodeModel
     public function setModelClass($value)
     {
         $this->_modelClass = $value;
+    }
+
+    public function isEnctypeForm()
+    {
+        foreach($this->_columns as $column){
+            if(isset($column->builder->field_type) && $column->builder->field_type=='file'){
+                return true;
+            }
+        }
+        return false;
     }
 }
