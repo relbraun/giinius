@@ -156,6 +156,7 @@ class CrudmodelCode extends CCodeModel
                     else $column->attachBehavior('builder', new CBehavior());
 
                 }
+                usort($this->_columns, array($this, 'asort'));
             }
         }
     }
@@ -830,5 +831,19 @@ class CrudmodelCode extends CCodeModel
             }
         }
         return false;
+    }
+    /**
+     *
+     * @param CDbColumnSchema $a
+     * @param CDbColumnSchema $b
+     */
+    public function asort($a, $b)
+    {
+        if(isset($a->builder->sorter) && isset($b->builder->sorter)){
+            if($a->builder->sorter==$b->builder->sorter)
+                return 0;
+            return $a->builder->sorter > $b->builder->sorter ? 1 : -1;
+        }
+        return 0;
     }
 }

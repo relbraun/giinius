@@ -21,7 +21,14 @@ class CrudmodelGenerator extends CCodeGenerator
     public function actionFormBuilder($model_name)
     {
         $models = GiiniusBuilder::model()->findAllByAttributes(array('model' => $model_name));
-        if (!$models) {
+        if($models){
+            usort($models, function($a,$b){
+                if($a->sorter==$b->sorter)
+                    return 0;
+                return $a->sorter > $b->sorter ? 1 :-1;
+            });
+        }
+        else {
             if(!Yii::autoload($model_name))
                 return;
             $m=new $model_name;
@@ -30,7 +37,8 @@ class CrudmodelGenerator extends CCodeGenerator
                  return;
             }
             $tbl=Yii::app()->db->schema->getTable($m->tableName());
-            foreach($tbl->columns as $col){
+            $columns = $tbl->columns;
+            foreach($columns as $col){
                 if(!$col->autoIncrement){
                  $mod=new GiiniusBuilder;
                  $mod->attribute=$col->name;
@@ -116,6 +124,7 @@ class CrudmodelGenerator extends CCodeGenerator
 		$modelClass=Yii::import($this->codeModel,true);
 		$model=new $modelClass;
 		$model->loadStickyAttributes();
+                $counter=0;
 		if(isset($_POST[$modelClass]))
 		{
 			$model->attributes=$_POST[$modelClass];
@@ -134,6 +143,8 @@ class CrudmodelGenerator extends CCodeGenerator
                                     $giinius->attributes=$builder;
                                     $giinius->model=$model->model;
                                 }
+                                $giinius->sorter=$counter;
+                                $counter++;
                                 if(!$giinius->save()){
                                     Yii::log('giinius.giiniusBuilder',$giinius->model.":{$giinius->attribute}".' did not save');
                                 }
