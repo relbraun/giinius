@@ -27,18 +27,21 @@ $inline=$this->inline ? 'form-inline' : '';
 	<?php echo "<?php echo \$form->errorSummary(\$model); ?>\n"; ?>
 
 <?php
-foreach($this->tableSchema->columns as $column)
+foreach($this->_columns as $column)
 {
 	if($column->autoIncrement)
 		continue;
-?>
+        $builder = isset($column->builder) ? $column->builder : new CBehavior();
+        if(isset($builder->field_type) && $builder->field_type !='none'):     ?>
 	<div class="form-group">
-		<?php echo "<?php echo ".$this->generateActiveLabel($this->modelClass,$column)."; ?>\n"; ?>
+            <?php if(isset($builder->field_type) && $builder->field_type !='hidden'): ?>
+		<?php echo "<?php echo ".$this->generateActiveLabel($this->modelClass,$column)."; ?>\n";
+                endif; ?>
 		<?php echo "<?php ".$this->generateActiveField($this->modelClass,$column)."; ?>\n"; ?>
 		<?php echo "<?php echo \$form->error(\$model,'{$column->name}'); ?>\n"; ?>
 	</div>
 
-<?php
+<?php endif;
 }
 ?>
 	<div class="form-group">

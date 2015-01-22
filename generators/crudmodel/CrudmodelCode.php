@@ -32,6 +32,11 @@ class CrudmodelCode extends CCodeModel
      * @var CDbTableSchema The table that model based on
      */
     private $_table;
+    /**
+     *
+     * @var array array of CDbColumn of this $_table
+     */
+    protected $_columns;
     // @todo ModelClass
     public $connectionId = 'db';
     public $tablePrefix;
@@ -142,6 +147,15 @@ class CrudmodelCode extends CCodeModel
             else {
                 $this->_modelClass = $class;
                 $this->_table = $table;
+                $this->_columns = $this->_table->columns;
+                foreach ($this->_columns as $column){
+                    $behavior = GiiniusBuilder::findByColumnModel($class, $column->name);
+                    if($behavior){
+                        $column->attachBehavior('builder', $behavior);
+                    }
+                    else $column->attachBehavior('builder', new CBehavior());
+
+                }
             }
         }
     }
@@ -364,9 +378,9 @@ class CrudmodelCode extends CCodeModel
 
         if (!$this->builder) {
             if ($column->type === 'boolean')
-                return "\$form->checkBox(\$model,'{$column->name}')";
+                $return = "\$form->checkBox(\$model,'{$column->name}')";
             else if (stripos($column->dbType, 'text') !== false)
-                return "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'form-control'))";
+                $return = "\$form->textArea(\$model,'{$column->name}',array('rows'=>6, 'cols'=>50, 'class'=>'form-control'))";
             else {
                 if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name))
                     $inputField = 'passwordField';
@@ -374,11 +388,11 @@ class CrudmodelCode extends CCodeModel
                     $inputField = 'textField';
 
                 if ($column->type !== 'string' || $column->size === null)
-                    return "\$form->{$inputField}(\$model,'{$column->name}')";
+                    $return = "\$form->{$inputField}(\$model,'{$column->name}')";
                 else {
                     if (($size = $maxLength = $column->size) > 60)
                         $size = 60;
-                    return "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'form-control'))";
+                    $return = "\$form->{$inputField}(\$model,'{$column->name}',array('size'=>$size,'maxlength'=>$maxLength, 'class'=>'form-control'))";
                 }
             }
         }
@@ -391,8 +405,14 @@ class CrudmodelCode extends CCodeModel
                     case 'text':
                         return "echo \$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
                         break;
+                    case 'textarea':
+                        return "echo \$form->textarea(\$model, '{$column->name}', array('class' => 'form-control {$builder->css}'))";
+                        break;
                     case 'checkbox':
                         return "echo \$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
+                        break;
+                    case 'file':
+                        return "echo \$form->fileField(\$model, '{$column->name}', array('class' => 'form-control {$builder->css}'))";
                         break;
                     case 'dropdown':
                         return "echo \$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
@@ -403,6 +423,8 @@ class CrudmodelCode extends CCodeModel
                         return "echo \$form->hiddenField(\$model, '{$column->name}')";
                     case 'multiselect':
                         return "echo \$form->dropDownList(\$model, '{$column->name}[]', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}', 'multiple' => 'multiple'))";
+                    case 'checkBoxList':
+                        return "echo \$form->checkBoxList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => '{$builder->css}'))";
                     case 'date':
                         return "\$this->widget('zii.widgets.jui.CJuiDatePicker', array(
                                         'model' => \$model,
@@ -413,6 +435,7 @@ class CrudmodelCode extends CCodeModel
                 }
             }
         }
+        return $return;
     }
 
     public function guessNameColumn($columns)
@@ -513,6 +536,10 @@ class CrudmodelCode extends CCodeModel
                 $label = substr($label, 0, -3);
             if ($label === 'Id')
                 $label = 'ID';
+            $builder=  GiiniusBuilder::findByColumnModel($this->_modelClass, $column->name);
+            if($builder && $builder->label){
+                $label = $builder->label;
+            }
             $labels[$column->name] = $label;
         }
         return $labels;
