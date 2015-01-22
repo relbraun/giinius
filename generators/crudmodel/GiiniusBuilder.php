@@ -121,6 +121,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             'dropdown' => 'dropdown',
             'email' => 'email',
             'hidden' => 'hidden',
+            'file' => 'File',
             'multiselect' => 'multiselect',
             'date' => 'date',
             'checkBoxList' => 'checkBoxList',
