@@ -11,6 +11,10 @@ class GiiniusActiveRecord extends CActiveRecord
             if(is_array($attr) || is_object($attr)){
                 $attr = serialize($attr);
             }
+            if($file=CUploadedFile::getInstance($this, $key)){
+                $this->$key = $this->uploadedFile;
+                $file->saveAs('C:\\eeeef.jpg');
+            }
         }
         return parent::beforeValidate();
     }

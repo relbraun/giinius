@@ -783,11 +783,12 @@ class CrudmodelCode extends CCodeModel
         $arr = explode("\n", $builder->options);
         $s = '';
         foreach ($arr as $opt) {
+            $opt=trim($opt);
             if($builder->use_numerical){
-                $s.="'$opt',\n\t\t";
+                $s.="'$opt',\n\t";
             }
             else{
-                $s.="'$opt' => '$opt',\n\t\t";
+                $s.="'$opt' => '$opt',\n\t";
             }
 
         }
@@ -868,7 +869,7 @@ class CrudmodelCode extends CCodeModel
 
     protected function zipToExtension($file)
     {
-        $ext = Yii::getPathOfAlias('ext');
+        $ext = Yii::app()->extensionPath;
         $zip=new ZipArchive();
         $zip->open($file);
         $zip->extractTo($ext);
