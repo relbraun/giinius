@@ -780,14 +780,14 @@ class CrudmodelCode extends CCodeModel
             return '';
         if(!$builder->options)
             return;
-        $arr = preg_split('/\n/', $builder->options);
+        $arr = explode("\n", $builder->options);
         $s = '';
         foreach ($arr as $opt) {
             if($builder->use_numerical){
-                $s.="'$opt',\n\t\t\t";
+                $s.="'$opt',\n\t\t";
             }
             else{
-                $s.="'$opt' => '$opt',\n\t\t\t";
+                $s.="'$opt' => '$opt',\n\t\t";
             }
 
         }
