@@ -14,7 +14,7 @@
     text-decoration: none;
     background-color: buttonface;
 }
-.attribute-wraper{
+.attribute-wrapper{
     padding: 12px;
     border: 1px solid #ccc;
     margin-bottom: 3px;
@@ -32,6 +32,13 @@
 
 .giinius-form-wrapper li{
     list-style: none;
+}
+.dropdown-section{
+    overflow: hidden;
+    display: none;
+}
+.dropdown-section.active{
+
 }
 /**********Sortable****************/
 .ui-state-highlight{

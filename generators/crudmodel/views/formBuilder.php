@@ -24,5 +24,18 @@
         $('.giinius-form-wrapper ul').sortable({
             placeholder: "ui-state-highlight"
         });
+        $('.field-type-selector').change(function(){
+            if($(this).val()=='dropdown'){
+                var $section=$(this).parents('.attribute-wrapper').find('.dropdown-section');
+                $section.addClass('active');
+                $section.slideDown(300);
+            }
+            else{
+                var $section=$(this).parents('.attribute-wrapper').find('.dropdown-section');
+                $section.removeClass('active');
+                $section.slideUp(300);
+            }
+        });
+
     })(jQuery);
 </script>

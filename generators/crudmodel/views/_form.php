@@ -6,7 +6,7 @@
 $form = new CActiveForm($this);
 ?>
 <li>
-    <div class="attribute-wraper">
+    <div class="attribute-wrapper">
         <a class="x-remover" href="javascript:;">x</a>
         <div class="row">
             <h4><?php echo $field->attribute ?></h4>
@@ -19,12 +19,12 @@ $form = new CActiveForm($this);
 
         <div class="row" data-id="<?php echo $id ?>">
             <?php echo $form->labelEx($field, 'field_type'); ?>
-            <?php echo $form->dropDownList($field, "[$id]field_type", $field->getFieldtypeOptions()); ?>
+            <?php echo $form->dropDownList($field, "[$id]field_type", $field->getFieldtypeOptions(),array('class'=>'field-type-selector')); ?>
             <div class="tooltip">
 
             </div>
             <?php echo $form->error($field, 'field_type'); ?>
-            <div id="dropdown-section" data-id="<?php echo $id ?>" class="container">
+            <div id="dropdown-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="container dropdown-section">
                 <div class="span-6">
                     <?php echo $form->labelEx($field, 'options'); ?>
                     <?php echo $form->textArea($field, "[$id]options"); ?>
