@@ -93,6 +93,7 @@ class CrudmodelGenerator extends CCodeGenerator
                 'field_type' => 'string',
                 'css' => 'string',
                 'options' => 'text',
+                'use_numerical' => 'boolean',
                 'label' => 'string',
                 'placeholder' => 'boolean',
                 'sorter' => 'integer',
@@ -137,6 +138,7 @@ class CrudmodelGenerator extends CCodeGenerator
                                 if($giinius){
                                     $giinius->attributes=$builder;
                                     $giinius->model=$model->model;
+                                   // var_dump($giinius->attributes);
                                 }
                                 else{
                                     $giinius=new GiiniusBuilder;

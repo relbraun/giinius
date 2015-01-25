@@ -32,8 +32,15 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 <?php
-foreach($this->tableSchema->columns as $column)
-	echo "\t\t'".$column->name."',\n";
+foreach($this->_columns as $column){
+    if(isset($column->builder->field_type)&&$column->builder->field_type=='dropdown'){
+        echo "\t\tarray('name'=>'{$column->name}',
+                    'value'=>\$model->{$column->name}Data[\$model->{$column->name}],
+                    'type'=>'html'),\n";
+    }
+    else
+	echo "\t\t'".$column->name.":html',\n";
+}
 ?>
 	),
 )); ?>

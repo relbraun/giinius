@@ -173,7 +173,7 @@ class CrudmodelCode extends CCodeModel
 
         $files = scandir($templatePath);
         foreach ($files as $file) {
-            if (is_file($templatePath . '/' . $file) && CFileHelper::getExtension($file) === 'php' && $file !== 'controller.php' && $file !== 'model.php') {
+            if (is_file($templatePath . '/' . $file) && CFileHelper::getExtension($file) === 'php' && $file !== 'controller.php' && $file !== 'model.php' && $file !== 'activeRecord.php') {
                 $rendered = $this->render($templatePath . '/' . $file);
                 $this->files[] = new CCodeFile(
                         $this->viewPath . DIRECTORY_SEPARATOR . $file, $rendered
@@ -439,6 +439,15 @@ class CrudmodelCode extends CCodeModel
                                         'htmlOptions' => array(
                                             'class' => 'form-control {$builder->css}',
                                         )));";
+                    case 'ckeditor':
+
+                        $this->zipToExtension(Yii::getPathOfAlias('giin.ziped').'/ckeditor.zip');
+                        return "\$this->widget('ext.ckeditor.CKeditor', array(
+                                        'model' => \$model,
+                                        'attribute' => '{$column->name}',
+                                        'htmlOptions' => array(
+                                            'class' => 'ckeditor {$builder->css}',
+                                        )));";
                 }
             }
         }
@@ -526,8 +535,12 @@ class CrudmodelCode extends CCodeModel
 
     public function validateBaseClass($attribute, $params)
     {
+
         $class = @Yii::import($this->baseClass, true);
-        if (!is_string($class) || !$this->classExists($class))
+        if($class=='GiiniusActiveRecord')
+            return;
+//        var_dump($this);var_dump($class);die;
+        if (!is_string($class) || (!$this->classExists($class)&&$class!='GiiniusActiveRecord'))
             $this->addError('baseClass', "Class '{$this->baseClass}' does not exist or has syntax error.");
         else if ($class !== 'CActiveRecord' && !is_subclass_of($class, 'CActiveRecord'))
             $this->addError('baseClass', "'{$this->model}' must extend from CActiveRecord.");
@@ -770,7 +783,13 @@ class CrudmodelCode extends CCodeModel
         $arr = preg_split('/\n/', $builder->options);
         $s = '';
         foreach ($arr as $opt) {
-            $s.="'$opt' => '$opt',\n\t\t\t";
+            if($builder->use_numerical){
+                $s.="'$opt',\n\t\t\t";
+            }
+            else{
+                $s.="'$opt' => '$opt',\n\t\t\t";
+            }
+
         }
         if($s){
         return
@@ -845,5 +864,13 @@ class CrudmodelCode extends CCodeModel
             return $a->builder->sorter > $b->builder->sorter ? 1 : -1;
         }
         return 0;
+    }
+
+    protected function zipToExtension($file)
+    {
+        $ext = Yii::getPathOfAlias('ext');
+        $zip=new ZipArchive();
+        $zip->open($file);
+        $zip->extractTo($ext);
     }
 }
