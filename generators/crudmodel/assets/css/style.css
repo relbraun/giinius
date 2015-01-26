@@ -33,12 +33,15 @@
 .giinius-form-wrapper li{
     list-style: none;
 }
-.dropdown-section{
+.dropdown-selector-section, .from-table-section, .from-list-section{
     overflow: hidden;
     display: none;
 }
 .dropdown-section.active{
 
+}
+div.form label.inline{
+    display: inline;
 }
 /**********Sortable****************/
 .ui-state-highlight{

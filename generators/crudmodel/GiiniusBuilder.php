@@ -131,6 +131,14 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         );
     }
 
+    public function getValueSourceOptions()
+    {
+        return array(
+            'from_list' => 'From list',
+            'from_table' => 'From table',
+        );
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

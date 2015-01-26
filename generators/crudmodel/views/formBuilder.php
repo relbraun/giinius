@@ -26,16 +26,29 @@
         });
         $('.field-type-selector').change(function(){
             if($(this).val()=='dropdown'){
-                var $section=$(this).parents('.attribute-wrapper').find('.dropdown-section');
+                var $section=$(this).parents('.attribute-wrapper').find('.dropdown-selector-section');
                 $section.addClass('active');
                 $section.slideDown(300);
             }
             else{
-                var $section=$(this).parents('.attribute-wrapper').find('.dropdown-section');
+                var $section=$(this).parents('.attribute-wrapper').find('.dropdown-selector-section');
                 $section.removeClass('active');
                 $section.slideUp(300);
             }
         });
-
+        $('.value-source-radio').change(function(){
+            if($(this).is(':checked')){
+                var $tableSection=$(this).parents('.attribute-wrapper').find('.from-table-section');
+                var $listSection=$(this).parents('.attribute-wrapper').find('.from-list-section');
+                if($(this).val()=='from_table'){
+                    $listSection.slideUp(300);
+                    $tableSection.slideDown(300);
+                }
+                if($(this).val()=='from_list'){
+                    $listSection.slideDown(300);
+                    $tableSection.slideUp(300);
+                }
+            }
+        });
     })(jQuery);
 </script>
