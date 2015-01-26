@@ -127,6 +127,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             'date' => 'date',
             'checkBoxList' => 'checkBoxList',
             'ckeditor' => 'CKEditor',
+            'filedrop' => 'DropZone',
         );
     }
 

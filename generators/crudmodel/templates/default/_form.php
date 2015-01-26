@@ -37,7 +37,7 @@ foreach($this->_columns as $column)
 		continue;
         $builder = isset($column->builder) ? $column->builder : new CBehavior();
         if(isset($builder->field_type) && $builder->field_type !='none'):     ?>
-	<div class="form-group">
+	<div class="form-group" id="<?php echo "{$this->modelClass}--{$column->name}" ?>">
             <?php if(isset($builder->field_type) && $builder->field_type !='hidden'): ?>
 		<?php echo "<?php echo ".$this->generateActiveLabel($this->modelClass,$column)."; ?>\n";
                 endif; ?>

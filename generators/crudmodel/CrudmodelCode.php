@@ -402,15 +402,16 @@ class CrudmodelCode extends CCodeModel
         }
         else {
             $maxLength = $column->size;
+            $maxLength = $maxLength ? "'maxlength' => $maxLength, " : '';
             $return = '';
             $builder = GiiniusBuilder::model()->findByAttributes(array('model' => $this->model, 'attribute' => $column->name));
             if($builder){
                 switch ($builder->field_type) {
                     case 'text':
-                        return "echo \$form->textField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        return "echo \$form->textField(\$model, '{$column->name}', array($maxLength'class' => 'form-control {$builder->css}'))";
                         break;
                     case 'password':
-                        return "echo \$form->passwordField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        return "echo \$form->passwordField(\$model, '{$column->name}', array($maxLength'class' => 'form-control {$builder->css}'))";
                         break;
                     case 'textarea':
                         return "echo \$form->textarea(\$model, '{$column->name}', array('class' => 'form-control {$builder->css}'))";
@@ -425,7 +426,7 @@ class CrudmodelCode extends CCodeModel
                         return "echo \$form->dropDownList(\$model, '{$column->name}', \$model->{$column->name}Data, array('class' => 'form-control {$builder->css}'))";
                         break;
                     case 'email':
-                        return "echo \$form->emailField(\$model, '{$column->name}', array('maxlength' => $maxLength, 'class' => 'form-control {$builder->css}'))";
+                        return "echo \$form->emailField(\$model, '{$column->name}', array($maxLength'class' => 'form-control {$builder->css}'))";
                     case 'hidden':
                         return "echo \$form->hiddenField(\$model, '{$column->name}')";
                     case 'multiselect':
@@ -440,13 +441,20 @@ class CrudmodelCode extends CCodeModel
                                             'class' => 'form-control {$builder->css}',
                                         )));";
                     case 'ckeditor':
-
                         $this->zipToExtension(Yii::getPathOfAlias('giin.ziped').'/ckeditor.zip');
                         return "\$this->widget('ext.ckeditor.CKeditor', array(
                                         'model' => \$model,
                                         'attribute' => '{$column->name}',
                                         'htmlOptions' => array(
                                             'class' => 'ckeditor {$builder->css}',
+                                        )));";
+                    case 'filedrop':
+                        $this->zipToExtension(Yii::getPathOfAlias('giin.ziped').'/dropzone.zip');
+                        return "\$this->widget('ext.dropzone.Dropzone', array(
+                                        'model' => \$model,
+                                        'attribute' => '{$column->name}',
+                                        'htmlOptions' => array(
+                                            'class' => '{$builder->css}',
                                         )));";
                 }
             }
@@ -871,7 +879,12 @@ class CrudmodelCode extends CCodeModel
     {
         $ext = Yii::app()->extensionPath;
         $zip=new ZipArchive();
+
         $zip->open($file);
-        $zip->extractTo($ext);
+        $stat = $zip->statIndex( 0 );
+        $name = $ext . '/' . $stat['name'];
+        if(!file_exists($name)){
+            $zip->extractTo($ext);
+        }
     }
 }
