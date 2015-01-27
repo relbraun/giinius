@@ -23,13 +23,16 @@ $form = new CActiveForm($this);
             <div class="tooltip">
 
             </div>
+            <?php $selectorActive = $field->field_type=='dropdown' ? ' active' :''; ?>
             <?php echo $form->error($field, 'field_type'); ?>
-            <div id="dropdown-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="dropdown-section">
+            <div id="dropdown-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="dropdown-section<?php echo $selectorActive ?>">
                 <div class="dropdown-selector-section">
                     <?php echo $form->labelEx($field, 'value_source'); ?>
                     <?php echo $form->radioButtonList($field, "[$id]value_source", $field->valueSourceOptions, array('class' => 'value-source-radio', 'labelOptions' => array('class' => 'inline'))); ?>
                 </div>
-                <div class="from-list-section">
+                <?php $listActive = $field->field_type=='dropdown' && $field->value_source=='from_list' ? ' active' :'';
+                      $tableActive= $field->field_type=='dropdown' && $field->value_source=='from_table' ? ' active' :''; ?>
+                <div class="from-list-section<?php echo $listActive ?>">
                     <div class="container">
                         <div class="span-6">
                             <?php echo $form->labelEx($field, 'options'); ?>
@@ -50,7 +53,7 @@ $form = new CActiveForm($this);
                     </div>
                 </div>
 
-                <div class="from-table-section">
+                <div class="from-table-section<?php echo $tableActive ?>">
                     <div class="container">
                         <div class="span-5">
                             <?php echo $form->labelEx($field, 'model_source'); ?>

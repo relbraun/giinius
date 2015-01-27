@@ -32,6 +32,7 @@ class CrudmodelCode extends CCodeModel
      * @var CDbTableSchema The table that model based on
      */
     private $_table;
+
     /**
      *
      * @var array array of CDbColumn of this $_table
@@ -148,13 +149,13 @@ class CrudmodelCode extends CCodeModel
                 $this->_modelClass = $class;
                 $this->_table = $table;
                 $this->_columns = $this->_table->columns;
-                foreach ($this->_columns as $column){
+                foreach ($this->_columns as $column) {
                     $behavior = GiiniusBuilder::findByColumnModel($class, $column->name);
-                    if($behavior){
+                    if ($behavior) {
                         $column->attachBehavior('builder', $behavior);
                     }
-                    else $column->attachBehavior('builder', new CBehavior());
-
+                    else
+                        $column->attachBehavior('builder', new CBehavior());
                 }
                 usort($this->_columns, array($this, 'asort'));
             }
@@ -195,12 +196,12 @@ class CrudmodelCode extends CCodeModel
             'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
             'connectionId' => $this->connectionId,
         );
-        $modelPath=strpos($this->model, '.')>0 ? $this->model: $this->modelPath;
+        $modelPath = strpos($this->model, '.') > 0 ? $this->model : $this->modelPath;
         $this->files[] = new CCodeFile(
                 Yii::getPathOfAlias($modelPath . '/' . $this->_modelClass) . '.php', $this->render($templatePath . '/model.php', $params)
         );
         $this->files[] = new CCodeFile(
-            Yii::getPathOfAlias($modelPath . '/' . $this->baseClass) . '.php', $this->render($templatePath . '/activeRecord.php', $params)
+                Yii::getPathOfAlias($modelPath . '/' . $this->baseClass) . '.php', $this->render($templatePath . '/activeRecord.php', $params)
         );
     }
 
@@ -367,7 +368,7 @@ class CrudmodelCode extends CCodeModel
     {
         $inline = $this->inline ? 'sr-only' : '';
         $inline.=' control-label';
-        $inline=trim($inline);
+        $inline = trim($inline);
         return "\$form->labelEx(\$model,'{$column->name}', array('class'=>'$inline'))";
     }
 
@@ -405,7 +406,7 @@ class CrudmodelCode extends CCodeModel
             $maxLength = $maxLength ? "'maxlength' => $maxLength, " : '';
             $return = '';
             $builder = GiiniusBuilder::model()->findByAttributes(array('model' => $this->model, 'attribute' => $column->name));
-            if($builder){
+            if ($builder) {
                 switch ($builder->field_type) {
                     case 'text':
                         return "echo \$form->textField(\$model, '{$column->name}', array($maxLength'class' => 'form-control {$builder->css}'))";
@@ -441,7 +442,7 @@ class CrudmodelCode extends CCodeModel
                                             'class' => 'form-control {$builder->css}',
                                         )));";
                     case 'ckeditor':
-                        $this->zipToExtension(Yii::getPathOfAlias('giin.ziped').'/ckeditor.zip');
+                        $this->zipToExtension(Yii::getPathOfAlias('giin.ziped') . '/ckeditor.zip');
                         return "\$this->widget('ext.ckeditor.CKeditor', array(
                                         'model' => \$model,
                                         'attribute' => '{$column->name}',
@@ -449,7 +450,7 @@ class CrudmodelCode extends CCodeModel
                                             'class' => 'ckeditor {$builder->css}',
                                         )));";
                     case 'filedrop':
-                        $this->zipToExtension(Yii::getPathOfAlias('giin.ziped').'/dropzone.zip');
+                        $this->zipToExtension(Yii::getPathOfAlias('giin.ziped') . '/dropzone.zip');
                         return "\$this->widget('ext.dropzone.Dropzone', array(
                                         'model' => \$model,
                                         'attribute' => '{$column->name}',
@@ -545,10 +546,10 @@ class CrudmodelCode extends CCodeModel
     {
 
         $class = @Yii::import($this->baseClass, true);
-        if($class=='GiiniusActiveRecord')
+        if ($class == 'GiiniusActiveRecord')
             return;
 //        var_dump($this);var_dump($class);die;
-        if (!is_string($class) || (!$this->classExists($class)&&$class!='GiiniusActiveRecord'))
+        if (!is_string($class) || (!$this->classExists($class) && $class != 'GiiniusActiveRecord'))
             $this->addError('baseClass', "Class '{$this->baseClass}' does not exist or has syntax error.");
         else if ($class !== 'CActiveRecord' && !is_subclass_of($class, 'CActiveRecord'))
             $this->addError('baseClass', "'{$this->model}' must extend from CActiveRecord.");
@@ -564,8 +565,8 @@ class CrudmodelCode extends CCodeModel
                 $label = substr($label, 0, -3);
             if ($label === 'Id')
                 $label = 'ID';
-            $builder=  GiiniusBuilder::findByColumnModel($this->_modelClass, $column->name);
-            if($builder && $builder->label){
+            $builder = GiiniusBuilder::findByColumnModel($this->_modelClass, $column->name);
+            if ($builder && $builder->label) {
                 $label = $builder->label;
             }
             $labels[$column->name] = $label;
@@ -596,8 +597,8 @@ class CrudmodelCode extends CCodeModel
                 $length[$column->size][] = $column->name;
             else if (!$column->isPrimaryKey && !$r)
                 $safe[] = $column->name;
-            if(isset($column->builder->field_type) && $column->builder->field_type=='email'){
-                $email[]=$column->name;
+            if (isset($column->builder->field_type) && $column->builder->field_type == 'email') {
+                $email[] = $column->name;
             }
         }
         if ($required !== array())
@@ -784,34 +785,46 @@ class CrudmodelCode extends CCodeModel
             'model' => $model,
             'attribute' => $attribute,
         ));
+        $checker=false;
         if (!$builder)
             return '';
-        if(!$builder->options)
+        if (!$builder->options)
             return;
-        $arr = explode("\n", $builder->options);
-        $s = '';
-        foreach ($arr as $opt) {
-            $opt=trim($opt);
-            if($builder->use_numerical){
-                $s.="'$opt',\n\t";
-            }
-            else{
-                $s.="'$opt' => '$opt',\n\t";
-            }
+        $func="\n\n public function get{$attribute}Data()
+   {\n";
+        if ($builder->value_source == 'from_list') {
+            $arr = explode("\n", $builder->options);
 
-        }
-        if($s){
-        return
-  "\n\n public function get{$attribute}Data()
-   {
-        return array(
-            ".trim($s)."
-           );
+
+            $s="return array(
+            ";
+            foreach ($arr as $opt) {
+                $opt = trim($opt);
+                $checker=true;
+                if ($builder->use_numerical) {
+                    $s.="'$opt',\n\t";
+                }
+                else {
+                    $s.="'$opt' => '$opt',\n\t";
+                }
+            }
+            $s.=");
    \t}\n";
 
         }
-        else
-            return '';
+        elseif ($builder->value_source == 'from_table') {
+            $checker=true;
+            $s="\$model={$builder->model_source}::model()->findAll();\n";
+            $s.= "\$data=CHtml::listData(\$model, '{$builder->column_key}', '{$builder->column_value}');\n";
+            $s.= "return \$data;\n";
+            $s.="\t}\n";
+        }
+        if ($checker) {
+                return $func . $s;
+
+            }
+            else
+                return '';
     }
 
     public function save()
@@ -853,13 +866,14 @@ class CrudmodelCode extends CCodeModel
 
     public function isEnctypeForm()
     {
-        foreach($this->_columns as $column){
-            if(isset($column->builder->field_type) && $column->builder->field_type=='file'){
+        foreach ($this->_columns as $column) {
+            if (isset($column->builder->field_type) && $column->builder->field_type == 'file') {
                 return true;
             }
         }
         return false;
     }
+
     /**
      *
      * @param CDbColumnSchema $a
@@ -867,8 +881,8 @@ class CrudmodelCode extends CCodeModel
      */
     public function asort($a, $b)
     {
-        if(isset($a->builder->sorter) && isset($b->builder->sorter)){
-            if($a->builder->sorter==$b->builder->sorter)
+        if (isset($a->builder->sorter) && isset($b->builder->sorter)) {
+            if ($a->builder->sorter == $b->builder->sorter)
                 return 0;
             return $a->builder->sorter > $b->builder->sorter ? 1 : -1;
         }
@@ -878,13 +892,14 @@ class CrudmodelCode extends CCodeModel
     protected function zipToExtension($file)
     {
         $ext = Yii::app()->extensionPath;
-        $zip=new ZipArchive();
+        $zip = new ZipArchive();
 
         $zip->open($file);
-        $stat = $zip->statIndex( 0 );
+        $stat = $zip->statIndex(0);
         $name = $ext . '/' . $stat['name'];
-        if(!file_exists($name)){
+        if (!file_exists($name)) {
             $zip->extractTo($ext);
         }
     }
+
 }

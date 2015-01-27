@@ -8,6 +8,10 @@
  * @property string $model
  * @property string $attribute
  * @property string $field_type
+ * @property string $value_source
+ * @property string $model_source
+ * @property string $column_key
+ * @property string $column_value
  * @property string $css
  * @property string $options
  * @property string $label The field label
@@ -37,14 +41,15 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         // will receive user inputs.
         return array(
             array('model, attribute, field_type', 'required'),
-            array('model, attribute', 'length', 'max' => 50),
-            array('placeholder, use_numerical', 'numerical', 'integerOnly' => true),
-            array('field_type', 'length', 'max' => 25),
-            array('css', 'length', 'max' => 100),
-            array('options, label', 'safe'),
+            array('use_numerical, placeholder, sorter', 'numerical', 'integerOnly'=>true),
+            array('model, attribute', 'length', 'max'=>50),
+            array('field_type', 'length', 'max'=>25),
+            array('value_source, model_source, column_key, column_value, label', 'length', 'max'=>255),
+            array('css', 'length', 'max'=>100),
+            array('options', 'safe'),
             // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('id, model, attribute, field_type, css, options, use_numerical', 'safe', 'on' => 'search'),
+            // Please remove those attributes that should not be searched.
+            array('id, model, attribute, field_type, value_source, model_source, column_key, column_value, use_numerical, css, options, label, placeholder, sorter', 'safe', 'on'=>'search'),
         );
     }
 
