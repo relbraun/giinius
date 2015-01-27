@@ -811,7 +811,8 @@ class CrudmodelCode extends CCodeModel
    \t}\n";
 
         }
-        elseif ($builder->value_source == 'from_table') {
+        elseif ($builder->value_source == 'from_table' &&
+                $builder->model_source && $builder->column_key && $builder->column_value) {
             $checker=true;
             $s="\$model={$builder->model_source}::model()->findAll();\n";
             $s.= "\$data=CHtml::listData(\$model, '{$builder->column_key}', '{$builder->column_value}');\n";
