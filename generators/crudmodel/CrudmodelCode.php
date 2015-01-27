@@ -788,8 +788,7 @@ class CrudmodelCode extends CCodeModel
         $checker=false;
         if (!$builder)
             return '';
-        if (!$builder->options)
-            return;
+
         $func="\n\n public function get{$attribute}Data()
    {\n";
         if ($builder->value_source == 'from_list') {

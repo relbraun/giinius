@@ -49,6 +49,23 @@ class CrudmodelGenerator extends CCodeGenerator
         $this->renderPartial('formBuilder', array('models' => $models));
     }
 
+    /**
+     * @param $model CActiveRecord
+     */
+    public function actionAjaxFillColumns($model)
+    {
+        $tableName=$model::model()->tableName();
+        /** @var CDbConnection $db */
+        $db=Yii::app()->db;
+        $table=$db->getSchema()->getTable($tableName);
+        $s='';
+        foreach($table->columnNames as $col){
+            $s.="<option vlaue='$col'>$col</option>\n";
+        }
+        echo $s;
+        Yii::app()->end();
+    }
+
     public function actionIndex()
 	{
 		$model=$this->prepare();

@@ -57,7 +57,7 @@ $form = new CActiveForm($this);
                     <div class="container">
                         <div class="span-5">
                             <?php echo $form->labelEx($field, 'model_source'); ?>
-                            <?php echo $form->textField($field, "[$id]model_source"); ?>
+                            <?php echo $form->textField($field, "[$id]model_source",array('class'=>'model-source-text')); ?>
                             <div class="tooltip">
 
                             </div>
@@ -65,7 +65,7 @@ $form = new CActiveForm($this);
                         </div>
                         <div class="span-5">
                             <?php echo $form->labelEx($field, 'column_key'); ?>
-                            <?php echo $form->textField($field, "[$id]column_key"); ?>
+                            <?php echo $form->dropDownList($field, "[$id]column_key",array(),array('class'=>'column-key-dropdown')); ?>
                             <div class="tooltip">
 
                             </div>
@@ -73,7 +73,7 @@ $form = new CActiveForm($this);
                         </div>
                         <div class="span-5">
                             <?php echo $form->labelEx($field, 'column_value'); ?>
-                            <?php echo $form->textField($field, "[$id]column_value"); ?>
+                            <?php echo $form->dropDownList($field, "[$id]column_value",array(),array('class'=>'column-value-dropdown')); ?>
                             <div class="tooltip">
 
                             </div>

@@ -16,6 +16,7 @@
     ?>
     </ul>
 </div><!-- form -->
+<?php $columnsAjax=$this->createUrl('ajaxFillColumns'); ?>
 <script>
     (function($){
         $('.x-remover').click(function(){
@@ -56,6 +57,15 @@
                     $tableSection.removeClass('active');
                 }
             }
+        });
+        $('.model-source-text').change(function(){
+            var $self=$(this);
+            $keyDropdown=$(this).parents('.from-table-section').find('.column-key-dropdown');
+            $valDropdown=$(this).parents('.from-table-section').find('.column-value-dropdown');
+            $.ajax({url:'<?php echo $columnsAjax; ?>',data:{model:$self.val()},method:'get',success:function(html){
+                $keyDropdown.html(html);
+                $valDropdown.html(html);
+            }});
         });
     })(jQuery);
 </script>

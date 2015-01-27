@@ -40,7 +40,7 @@
 }
 .dropdown-section.active, .from-table-section.active, .from-list-section.active{
     display: block;
-    max-height: 200px;
+    max-height: 100px;
 }
 div.form label.inline{
     display: inline;
