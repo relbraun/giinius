@@ -133,6 +133,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             'checkBoxList' => 'checkBoxList',
             'ckeditor' => 'CKEditor',
             'filedrop' => 'DropZone',
+            'geocomplete' => 'Google maps',
         );
     }
 
