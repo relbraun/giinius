@@ -33,7 +33,7 @@ $form = new CActiveForm($this);
             </div>
             <?php $selectorActive = $field->field_type=='dropdown' ? ' active' :''; ?>
             <?php echo $form->error($field, 'field_type'); ?>
-            <div id="dropdown-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="dropdown-section<?php echo $selectorActive ?>">
+            <div id="dropdown-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="section dropdown-section<?php echo $selectorActive ?>">
                 <div class="dropdown-selector-section">
                     <?php echo $form->labelEx($field, 'value_source'); ?>
                     <?php echo $form->radioButtonList($field, "[$id]value_source", $field->valueSourceOptions, array('class' => 'value-source-radio', 'labelOptions' => array('class' => 'inline'))); ?>
@@ -91,6 +91,13 @@ $form = new CActiveForm($this);
                 </div>
 
             </div>
+            <div id="geocoding-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="section geocoding-section<?php echo $selectorActive ?>">
+                <div class="row">
+                    <?php echo $form->labelEx($field, 'use_map'); ?>
+                    <?php echo $form->checkBox($field, "[$id]use_map"); ?>
+                    <?php echo $form->error($field, 'use_map'); ?>
+                </div>
+            </div>
         </div>
 
         <div class="row">
@@ -101,6 +108,8 @@ $form = new CActiveForm($this);
             </div>
             <?php echo $form->error($field, 'css'); ?>
         </div>
+                <?php else: ?>
+                    <?php echo $form->hiddenField($field, "[$id]field_type"); ?>
             <?php endif; ?>
 
         <?php echo $form->hiddenField($field, "[$id]sorter"); ?>

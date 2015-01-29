@@ -41,7 +41,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         // will receive user inputs.
         return array(
             array('model, attribute, field_type', 'required'),
-            array('use_numerical, placeholder, sorter', 'numerical', 'integerOnly'=>true),
+            array('use_numerical, placeholder, sorter, use_map', 'numerical', 'integerOnly'=>true),
             array('model, attribute', 'length', 'max'=>50),
             array('field_type', 'length', 'max'=>25),
             array('value_source, model_source, column_key, column_value, label', 'length', 'max'=>255),

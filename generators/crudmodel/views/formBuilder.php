@@ -34,18 +34,19 @@
             placeholder: "ui-state-highlight"
         });
         $('.field-type-selector').change(function() {
+            var $section;
+            $(this).parents('.attribute-wrapper').find('.section').removeClass('active');
             if ($(this).val() == 'dropdown') {
-                var $section = $(this).parents('.attribute-wrapper').find('.dropdown-section');
-                $section.addClass('active');
-//                $section.slideDown(300);
+                $section = $(this).parents('.attribute-wrapper').find('.dropdown-section');
+            }
+            else if($(this).val() == 'geocomplete'){
+                $section = $(this).parents('.attribute-wrapper').find('.geocoding-section');
             }
             else {
-                var $section = $(this).parents('.attribute-wrapper').find('.dropdown-section');
-                $section.removeClass('active');
-//                $section.slideUp(300);
-//                $tableSection.slideUp(300);
-//                $tableSection.slideUp(300);
+//                var $section = $(this).parents('.attribute-wrapper').find('.geocoding-section');
+//                $section.removeClass('active');
             }
+            $section.addClass('active');
         });
         $('.value-source-radio').change(function() {
             if ($(this).is(':checked')) {

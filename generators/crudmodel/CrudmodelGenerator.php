@@ -120,6 +120,7 @@ class CrudmodelGenerator extends CCodeGenerator
                 'use_numerical' => 'boolean',
                 'label' => 'string',
                 'placeholder' => 'boolean',
+                'use_map' => 'boolean',
                 'sorter' => 'integer',
             ));
             $index = $schema->createIndex('KEY_' . $tbl_name, $tbl_name, 'model,attribute', true);
@@ -128,6 +129,7 @@ class CrudmodelGenerator extends CCodeGenerator
                 Yii::trace('The system didn\'t succeded to build the new table: ' . $tbl_name);
             if (!$db->createCommand($index)->execute())
                 Yii::trace('The system didn\'t succeded to build the new table: ' . $tbl_name);
+            $schema->getTable($tbl_name)->getColumn('use_map')->defaultValue = 1;
             return true;
         }
         return true;
@@ -171,8 +173,10 @@ class CrudmodelGenerator extends CCodeGenerator
                                 }
                                 $giinius->sorter=$counter;
                                 $counter++;
-                                if(!$giinius->save()){
-                                    Yii::log('giinius.giiniusBuilder',$giinius->model.":{$giinius->attribute}".' did not save');
+                                $saved = $giinius->save();
+                                if(!$saved){
+
+                                    $err=$giinius->errors;
                                 }
                             }
                         }

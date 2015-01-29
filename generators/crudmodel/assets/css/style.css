@@ -33,12 +33,12 @@
 .giinius-form-wrapper li{
     list-style: none;
 }
-.dropdown-section, .from-table-section, .from-list-section{
+.dropdown-section, .from-table-section, .from-list-section, .geocoding-section{
     overflow: hidden;
     transition: max-height 0.8s cubic-bezier(.01,1.45,.98,.01);
     max-height: 0;
 }
-.dropdown-section.active, .from-table-section.active, .from-list-section.active{
+.section.active, .from-table-section.active, .from-list-section.active{
     display: block;
     max-height: 100px;
 }
