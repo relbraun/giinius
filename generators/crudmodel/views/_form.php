@@ -9,13 +9,21 @@ $form = new CActiveForm($this);
     <div class="attribute-wrapper">
         <a class="x-remover" href="javascript:;">x</a>
 
-        <div class="row">
+
             <h4><?php echo $field->attribute ?></h4>
             <?php echo $form->hiddenField($field, "[$id]attribute"); ?>
 
 
-        </div>
 
+        <div class="row">
+            <?php echo $form->labelEx($field, 'label'); ?>
+            <?php echo $form->textField($field, "[$id]label"); ?>
+            <div class="tooltip">
+
+            </div>
+            <?php echo $form->error($field, 'label'); ?>
+        </div>
+            <?php if($field->field_type !='AI'): ?>
 
         <div class="row" data-id="<?php echo $id ?>">
             <?php echo $form->labelEx($field, 'field_type'); ?>
@@ -93,21 +101,8 @@ $form = new CActiveForm($this);
             </div>
             <?php echo $form->error($field, 'css'); ?>
         </div>
+            <?php endif; ?>
 
-
-        <div class="row">
-
-        </div>
-
-
-        <div class="row">
-            <?php echo $form->labelEx($field, 'label'); ?>
-            <?php echo $form->textField($field, "[$id]label"); ?>
-            <div class="tooltip">
-
-            </div>
-            <?php echo $form->error($field, 'label'); ?>
-        </div>
         <?php echo $form->hiddenField($field, "[$id]sorter"); ?>
     </div>
 </li>

@@ -33,17 +33,20 @@ class CrudmodelGenerator extends CCodeGenerator
                 return;
             $m=new $model_name;
             if(!$m){
-                 $this->render('error');
+                 $this->renderPartial('error');
                  return;
             }
             $tbl=Yii::app()->db->schema->getTable($m->tableName());
             $columns = $tbl->columns;
             foreach($columns as $col){
-                if(!$col->autoIncrement){
+
                  $mod=new GiiniusBuilder;
                  $mod->attribute=$col->name;
+                 if($col->autoIncrement){
+                     $mod->field_type='AI';
+                 }
                  $models[]=$mod;
-                }
+
             }
         }
         $this->renderPartial('formBuilder', array('models' => $models));
