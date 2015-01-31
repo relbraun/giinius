@@ -461,7 +461,7 @@ class CrudmodelCode extends CCodeModel
                         $this->zipToExtension(Yii::getPathOfAlias('giin.ziped') . '/geocomplete.zip');
                         return "\$this->widget('ext.ubilabs-geocomplete.Geocomplete', array(
                                         'model' => \$model,
-                                        'attribute' => 'name',
+                                        'attribute' => '{$column->name}',
                                         'htmlOptions' => array(
                                             'class' => '{$builder->css}',
                                         )));";
