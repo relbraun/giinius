@@ -17,6 +17,8 @@
  * @property string $label The field label
  * @property boolean $placeholder Whether show the placeholder
  * @property int $sorter The ordering of the fields
+ * @property boolean $show_in_table
+ * @property boolean $search
  */
 class GiiniusBuilder extends CActiveRecord implements IBehavior
 {
@@ -41,7 +43,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         // will receive user inputs.
         return array(
             array('model, attribute, field_type', 'required'),
-            array('use_numerical, placeholder, sorter, use_map', 'numerical', 'integerOnly'=>true),
+            array('use_numerical, placeholder, sorter, use_map, show_in_table, search', 'numerical', 'integerOnly'=>true),
             array('model, attribute', 'length', 'max'=>50),
             array('field_type', 'length', 'max'=>25),
             array('value_source, model_source, column_key, column_value, label', 'length', 'max'=>255),
@@ -143,6 +145,37 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             'from_list' => 'From list',
             'from_table' => 'From table',
         );
+    }
+
+    /**
+     *
+     * @param string $model
+     * @param CDbColumnSchema $column
+     */
+    public function autoFillFieldType($model,$column)
+    {
+        $this->model=$model;
+        $this->attribute=$column->name;
+        if($column->type==='boolean'){
+            $this->field_type='checkbox';
+        }
+        elseif(stripos($column->dbType, 'text') !== false){
+            $this->field_type='textarea';
+        }
+        else{
+            if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)){
+                $this->field_type='password';
+            }
+            elseif (preg_match('/^(email|e-mail)$/i', $column->name)){
+                $this->field_type='email';
+            }
+            elseif (preg_match('/(date)$/i', $column->name)){
+                $this->field_type='date';
+            }
+            else{
+                $this->field_type='text';
+            }
+        }
     }
 
     /**

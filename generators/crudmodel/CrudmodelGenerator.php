@@ -111,6 +111,8 @@ class CrudmodelGenerator extends CCodeGenerator
                 'model' => 'string',
                 'attribute' => 'string',
                 'field_type' => 'string',
+                'show_in_table' => 'boolean',
+                'search' => 'boolean',
                 'value_source' => 'string',
                 'model_source' => 'string',
                 'column_key' => 'string',
@@ -159,12 +161,14 @@ class CrudmodelGenerator extends CCodeGenerator
 
                         if(isset($_POST['GiiniusBuilder']) ){
                             $post=$_POST['GiiniusBuilder'];
+                            $tabModel=new $model->model;
+                            $table=Yii::app()->db->schema->getTable($tabModel->tableName());
+                            $columns=$table->columns;
                             foreach($post as $i=>$builder){
                                 $giinius=  GiiniusBuilder::model()->findByPk($i);
                                 if($giinius){
                                     $giinius->attributes=$builder;
                                     $giinius->model=$model->model;
-                                   // var_dump($giinius->attributes);
                                 }
                                 else{
                                     $giinius=new GiiniusBuilder;
@@ -174,10 +178,16 @@ class CrudmodelGenerator extends CCodeGenerator
                                 $giinius->sorter=$counter;
                                 $counter++;
                                 $saved = $giinius->save();
-                                if(!$saved){
-
-                                    $err=$giinius->errors;
+                                if($saved){
+                                    unset($columns[$giinius->attribute]);
                                 }
+                            }
+                            foreach ($columns as $colName => $column) {
+                                $giinius=new GiiniusBuilder;
+                                $giinius->autoFillFieldType($model->model,$column);
+                                $giinius->sorter=$counter;
+                                $giinius->save();
+                                $counter++;
                             }
                         }
             $giiniusBuilder= GiiniusBuilder::model()->findAllByAttributes(array('model' => $model->model));
