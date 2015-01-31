@@ -14,8 +14,8 @@ $form = new CActiveForm($this);
             <?php echo $form->hiddenField($field, "[$id]attribute"); ?>
 
 
-
-        <div class="row">
+            <div class="container">
+        <div class="row span-5">
             <?php echo $form->labelEx($field, 'label'); ?>
             <?php echo $form->textField($field, "[$id]label"); ?>
             <div class="tooltip">
@@ -23,6 +23,16 @@ $form = new CActiveForm($this);
             </div>
             <?php echo $form->error($field, 'label'); ?>
         </div>
+                <div class="row span-3">
+                    <?php echo $form->labelEx($field, 'show_in_table'); ?>
+                    <?php echo $form->checkBox($field, "[$id]show_in_table"); ?>
+                </div>
+
+                <div class="row span-3">
+                    <?php echo $form->labelEx($field, 'search'); ?>
+                    <?php echo $form->checkBox($field, "[$id]search"); ?>
+                </div>
+            </div>
             <?php if($field->field_type !='AI'): ?>
 
         <div class="row" data-id="<?php echo $id ?>">
