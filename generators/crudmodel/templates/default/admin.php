@@ -56,15 +56,21 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'filter'=>$model,
 	'columns'=>array(
 <?php
-$count=0;
-foreach($this->tableSchema->columns as $column)
+
+foreach($this->_columns as $column)
 {
-	if(++$count==7)
-		echo "\t\t/*\n";
-	echo "\t\t'".$column->name."',\n";
+	if($column->builder->show_in_table){
+            if($column->builder->field_type=='dropdown'){
+                echo "\t\tarray('name'=>'".$column->name."',
+                                'value'=>'\$data->{$column->name}Data[\$data->{$column->name}]'),\n";
+            }
+            else
+                echo "\t\t'".$column->name.":html',\n";
+        }
+        else{
+            echo "\t\t//'".$column->name.":html',\n";
+        }
 }
-if($count>=7)
-	echo "\t\t*/\n";
 ?>
 		array(
 			'class'=>'CButtonColumn',
