@@ -17,17 +17,18 @@
 	'method'=>'get',
 )); ?>\n"; ?>
 
-<?php foreach($this->tableSchema->columns as $column): ?>
+<?php foreach($this->_columns as $column): ?>
 <?php
-	$field=$this->generateInputField($this->modelClass,$column);
-	if(strpos($field,'password')!==false)
+	if(strpos($column->builder->field_type,'password')!==false)
 		continue;
+
+        if($column->builder->search):
 ?>
 	<div class="row">
 		<?php echo "<?php echo \$form->label(\$model,'{$column->name}'); ?>\n"; ?>
-		<?php echo "<?php echo ".$this->generateActiveField($this->modelClass,$column)."; ?>\n"; ?>
+		<?php echo "<?php ".$this->generateActiveField($this->modelClass,$column)."; ?>\n"; ?>
 	</div>
-
+<?php endif; ?>
 <?php endforeach; ?>
 	<div class="row buttons">
 		<?php echo "<?php echo CHtml::submitButton('Search'); ?>\n"; ?>
