@@ -26,10 +26,10 @@ class Geocomplete extends CInputWidget{
         $cs = Yii::app()->clientScript;
         $result = "<div class='geocomplete-wrapper'>";
         $result .= "<div class='geocomplete-input'>";
-        
+
         $result .= CHtml::activeTextField($this->model, $this->attribute, array('class'=>'geocomplete-textfield form-control'));
         $result .= "</div><div class='geocomplete-map'><div class='geocomplete-map-canvas'> </div>";
-        $result .= '</div>';
+        $result .= '</div></div>';
         $attribute = $this->attribute;
         $value = @$this->model->$attribute;
         $id = CHtml::getIdByName(get_class($this->model).'['.$this->attribute.']');
