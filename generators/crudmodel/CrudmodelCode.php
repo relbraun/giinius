@@ -404,6 +404,7 @@ class CrudmodelCode extends CCodeModel
         else {
             $maxLength = $column->size;
             $maxLength = $maxLength ? "'maxlength' => $maxLength, " : '';
+            $this->zipToComponents(Yii::getPathOfAlias('giin.ziped') . '/BootstrapButtonColumn.zip');
             $return = '';
             $builder = GiiniusBuilder::model()->findByAttributes(array('model' => $this->model, 'attribute' => $column->name));
             if ($builder) {
@@ -900,6 +901,19 @@ class CrudmodelCode extends CCodeModel
     protected function zipToExtension($file)
     {
         $ext = Yii::app()->extensionPath;
+        $zip = new ZipArchive();
+
+        $zip->open($file);
+        $stat = $zip->statIndex(0);
+        $name = $ext . '/' . $stat['name'];
+        if (!file_exists($name)) {
+            $zip->extractTo($ext);
+        }
+    }
+
+    protected function zipToComponents($file)
+    {
+        $ext = Yii::getPathOfAlias('application.components');
         $zip = new ZipArchive();
 
         $zip->open($file);
