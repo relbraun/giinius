@@ -101,6 +101,7 @@ $form = new CActiveForm($this);
                 </div>
 
             </div>
+            <?php $selectorActive = $field->field_type=='geocomplete' ? ' active' :''; ?>
             <div id="geocoding-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="section geocoding-section<?php echo $selectorActive ?>">
                 <div class="row">
                     <?php echo $form->labelEx($field, 'use_map'); ?>
@@ -108,6 +109,22 @@ $form = new CActiveForm($this);
                     <?php echo $form->error($field, 'use_map'); ?>
                 </div>
             </div>
+
+            <?php $selectorActive = $field->field_type=='const_value' ? ' active' :''; ?>
+            <div class="container">
+                    <div id="const-value-section-<?php echo $id ?>" data-id="<?php echo $id ?>" class="section const-value-section<?php echo $selectorActive ?>">
+                        <div class="row span-4">
+                            <?php echo $form->labelEx($field, 'const_value'); ?>
+                            <?php echo $form->dropDownList($field, "[$id]const_value", $field->getConstValueOptions()); ?>
+                            <?php echo $form->error($field, 'const_value'); ?>
+                        </div>
+                        <div class="row span-3">
+                            <?php echo $form->labelEx($field, 'update'); ?>
+                            <?php echo $form->checkBox($field, "[$id]update"); ?>
+                            <?php echo $form->error($field, 'update'); ?>
+                        </div>
+                    </div>
+                </div>
         </div>
 
         <div class="row">

@@ -924,4 +924,25 @@ class CrudmodelCode extends CCodeModel
         }
     }
 
+    protected function generateConstValues($withUpdate=false)
+    {
+        $return='';
+        foreach ($this->_columns as $column){
+            if($column->builder->field_type=='const_value' && $column->builder->update==$withUpdate){
+                switch($column->builder->const_value){
+                    case 'ip':
+                        $return.='$this->'.$column->name.'=$_SERVER[\'REMOTE_ADDR\'];'."\n";
+                        break;
+                    case 'user_id':
+                        $return.='$this->'.$column->name.'=Yii::app()->user->id;'."\n";
+                        break;
+                    case 'curdate':
+                        $return.='$this->'.$column->name.'=new CDbExpression("NOW()");'."\n";
+                        break;
+                }
+            }
+        }
+        return $return;
+    }
+
 }

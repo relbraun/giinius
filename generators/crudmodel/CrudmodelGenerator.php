@@ -1,9 +1,6 @@
 <?php
 Yii::setPathOfAlias('giin', __DIR__);
-function app()
-{
-    return Yii::app();
-}
+
 
 require_once 'GiiniusBuilder.php';
 /**
@@ -29,9 +26,16 @@ class CrudmodelGenerator extends CCodeGenerator
             });
         }
         else {
-            if(!Yii::autoload($model_name))
+            if($pos=strrpos($model_name,'.')!==false){
+                Yii::import($model_name);
+            }
+            $modelClassName=substr($model_name,  $pos);
+            if(!class_exists($modelClassName)){
+                $this->renderPartial('error');
                 return;
-            $m=new $model_name;
+            }
+
+            $m=new $modelClassName;
             if(!$m){
                  $this->renderPartial('error');
                  return;
@@ -117,6 +121,8 @@ class CrudmodelGenerator extends CCodeGenerator
                 'model_source' => 'string',
                 'column_key' => 'string',
                 'column_value' => 'string',
+                'const_value' => 'string',
+                'update' => 'boolean',
                 'css' => 'string',
                 'options' => 'text',
                 'use_numerical' => 'boolean',

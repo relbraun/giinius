@@ -152,6 +152,15 @@ foreach($columns as $name=>$column)
 			'criteria'=>$criteria,
 		));
 	}
+
+        protected function beforeValidate()
+        {
+            if($this->isNewRecord){
+                <?php echo $this->generateConstValues(); ?>
+            }
+            <?php echo $this->generateConstValues(true); ?>
+            return parent::beforeValidate();
+        }
 <?php
  foreach($columns as $name=>$column){
     echo $this->generateDropdownOptions($modelClass,$name);

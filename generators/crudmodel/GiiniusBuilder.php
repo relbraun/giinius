@@ -136,6 +136,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             'ckeditor' => 'CKEditor',
             'filedrop' => 'DropZone',
             'geocomplete' => 'Google maps',
+            'const_value' => 'Const value',
         );
     }
 
@@ -144,6 +145,15 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         return array(
             'from_list' => 'From list',
             'from_table' => 'From table',
+        );
+    }
+
+    public function getConstValueOptions()
+    {
+        return array(
+            'ip' => 'IP',
+            'user_id' => 'User id',
+            'curdate' => 'Current date',
         );
     }
 

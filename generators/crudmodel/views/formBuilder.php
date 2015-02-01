@@ -42,6 +42,9 @@
             else if($(this).val() == 'geocomplete'){
                 $section = $(this).parents('.attribute-wrapper').find('.geocoding-section');
             }
+            else if($(this).val() == 'const_value'){
+                $section = $(this).parents('.attribute-wrapper').find('.const-value-section');
+            }
             else {
 //                var $section = $(this).parents('.attribute-wrapper').find('.geocoding-section');
 //                $section.removeClass('active');
