@@ -52,6 +52,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 <?php echo "<?php"; ?> $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'<?php echo $this->class2id($this->modelClass); ?>-grid',
+        'itemsCssClass'=>'table table-bordered table-striped',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
@@ -73,7 +74,7 @@ foreach($this->_columns as $column)
 }
 ?>
 		array(
-			'class'=>'CButtonColumn',
+			'class'=>'CBootstrapButtonColumn',
 		),
 	),
 )); ?>
