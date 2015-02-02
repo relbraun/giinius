@@ -47,7 +47,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             array('update', 'boolean'),
             array('model, attribute', 'length', 'max'=>50),
             array('field_type', 'length', 'max'=>25),
-            array('value_source, model_source, column_key, column_value, label', 'length', 'max'=>255),
+            array('value_source, model_source, column_key, column_value, label, const_value', 'length', 'max'=>255),
             array('css', 'length', 'max'=>100),
             array('options', 'safe'),
             // The following rule is used by search().
