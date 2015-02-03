@@ -33,7 +33,7 @@
 .giinius-form-wrapper li{
     list-style: none;
 }
-.dropdown-section, .from-table-section, .from-list-section, .geocoding-section, .const-value-section{
+.dropdown-section, .from-table-section, .from-list-section, .section{
     overflow: hidden;
     transition: max-height 0.8s cubic-bezier(.01,1.45,.98,.01);
     max-height: 0;
