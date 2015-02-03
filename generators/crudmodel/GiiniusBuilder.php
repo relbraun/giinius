@@ -43,16 +43,15 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         // will receive user inputs.
         return array(
             array('model, attribute, field_type', 'required'),
-            array('use_numerical, placeholder, sorter, use_map, show_in_table, search', 'numerical', 'integerOnly'=>true),
-            array('update', 'boolean'),
-            array('model, attribute', 'length', 'max'=>50),
-            array('field_type', 'length', 'max'=>25),
-            array('value_source, model_source, column_key, column_value, label, const_value', 'length', 'max'=>255),
+            array('show_in_table, search, use_numerical, use_map, update, placeholder, sorter', 'numerical', 'integerOnly'=>true),
+            array('model, attribute', 'length', 'max'=>150),
+            array('field_type', 'length', 'max'=>125),
+            array('value_source, model_source, column_key, column_value, const_value, label', 'length', 'max'=>255),
             array('css', 'length', 'max'=>100),
             array('options', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, model, attribute, field_type, value_source, model_source, column_key, column_value, use_numerical, css, options, label, placeholder, sorter', 'safe', 'on'=>'search'),
+            array('id, model, attribute, field_type, show_in_table, search, value_source, model_source, column_key, column_value, use_numerical, use_map, const_value, update, css, options, label, placeholder, sorter', 'safe', 'on'=>'search'),
         );
     }
 
@@ -155,6 +154,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
             'ip' => 'IP',
             'user_id' => 'User id',
             'curdate' => 'Current date',
+            'timestamp' => 'Timestamp',
         );
     }
 

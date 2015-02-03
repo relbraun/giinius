@@ -931,13 +931,16 @@ class CrudmodelCode extends CCodeModel
             if($column->builder->field_type=='const_value' && $column->builder->update==$withUpdate){
                 switch($column->builder->const_value){
                     case 'ip':
-                        $return.='$this->'.$column->name.'=$_SERVER[\'REMOTE_ADDR\'];'."\n";
+                        $return.='$this->'.$column->name.'=$this->getRealIpAddr();'."\n";
                         break;
                     case 'user_id':
                         $return.='$this->'.$column->name.'=Yii::app()->user->id;'."\n";
                         break;
                     case 'curdate':
                         $return.='$this->'.$column->name.'=new CDbExpression("NOW()");'."\n";
+                        break;
+                    case 'timestamp':
+                        $return.='$this->'.$column->name.'=time();'."\n";
                         break;
                 }
             }
