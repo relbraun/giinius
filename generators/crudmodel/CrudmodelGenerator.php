@@ -110,34 +110,36 @@ class CrudmodelGenerator extends CCodeGenerator
 
         if (!in_array($tbl_name, $db->getSchema()->getTableNames())) {
             $schema = $db->getSchema();
-            $sql = $schema->createTable($tbl_name, array(
-                'id' => 'pk',
-                'model' => 'string',
-                'attribute' => 'string',
-                'field_type' => 'string',
-                'show_in_table' => 'boolean',
-                'search' => 'boolean',
-                'value_source' => 'string',
-                'model_source' => 'string',
-                'column_key' => 'string',
-                'column_value' => 'string',
-                'const_value' => 'string',
-                'update' => 'boolean',
-                'css' => 'string',
-                'options' => 'text',
-                'use_numerical' => 'boolean',
-                'label' => 'string',
-                'placeholder' => 'boolean',
-                'use_map' => 'boolean',
-                'sorter' => 'integer',
-            ));
-            $index = $schema->createIndex('KEY_' . $tbl_name, $tbl_name, 'model,attribute', true);
+            $sql =
+                    "CREATE TABLE IF NOT EXISTS `$tbl_name` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `model` varchar(255) DEFAULT NULL,
+  `attribute` varchar(255) DEFAULT NULL,
+  `field_type` varchar(255) DEFAULT NULL,
+  `show_in_table` tinyint(1) DEFAULT 1,
+  `search` tinyint(1) DEFAULT 1,
+  `value_source` varchar(255) DEFAULT NULL,
+  `model_source` varchar(255) DEFAULT NULL,
+  `column_key` varchar(255) DEFAULT NULL,
+  `column_value` varchar(255) DEFAULT NULL,
+  `const_value` varchar(255) DEFAULT NULL,
+  `update` tinyint(1) DEFAULT NULL,
+  `css` varchar(255) DEFAULT NULL,
+  `options` text,
+  `use_numerical` tinyint(1) DEFAULT NULL,
+  `label` varchar(255) DEFAULT NULL,
+  `placeholder` tinyint(1) DEFAULT NULL,
+  `use_map` tinyint(1) DEFAULT NULL,
+  `sorter` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `KEY_giinius_builder` (`model`,`attribute`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;"
+                ;
+
             $command = $db->createCommand($sql);
             if (!$command->execute())
                 Yii::trace('The system didn\'t succeded to build the new table: ' . $tbl_name);
-            if (!$db->createCommand($index)->execute())
-                Yii::trace('The system didn\'t succeded to build the new table: ' . $tbl_name);
-            $schema->getTable($tbl_name)->getColumn('use_map')->defaultValue = 1;
+            
             return true;
         }
         return true;

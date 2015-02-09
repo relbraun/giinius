@@ -74,7 +74,7 @@ foreach($this->_columns as $column)
 }
 ?>
 		array(
-			'class'=>'CBootstrapButtonColumn',
+			'class'=>'BootstrapButtonColumn',
 		),
 	),
 )); ?>

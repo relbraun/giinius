@@ -6,12 +6,13 @@
 $form = new CActiveForm($this);
 ?>
 <li>
+    <?php echo $form->hiddenField($field, "[$id]attribute"); ?>
     <div class="attribute-wrapper">
         <a class="x-remover" href="javascript:;">x</a>
 
 
             <h4><?php echo $field->attribute ?></h4>
-            <?php echo $form->hiddenField($field, "[$id]attribute"); ?>
+
 
 
             <div class="container">
