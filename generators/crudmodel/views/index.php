@@ -41,6 +41,7 @@ $('#giinius-form-loader').click(function(e){
 <?php $form=$this->beginWidget('CCodeForm', array('model'=>$model)); ?>
 
 	<div class="row">
+
 		<?php echo $form->labelEx($model,'model'); ?>
 		<?php echo $form->textField($model,'model',array('size'=>65)); ?>
 		<div class="tooltip">
