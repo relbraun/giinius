@@ -35,7 +35,7 @@ class CrudmodelCode extends CCodeModel
 
     /**
      *
-     * @var array array of CDbColumn of this $_table
+     * @var array array of CDbColumnSchema of this $_table
      */
     protected $_columns;
     // @todo ModelClass

@@ -205,6 +205,7 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         return self::model()->findByAttributes(array('model' => $model, 'attribute' => $column));
     }
 
+    /********************** BEHAVIOR*************************************/
     public function attach($owner)
     {
         $this->_enabled = true;
