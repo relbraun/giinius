@@ -139,7 +139,7 @@ class CrudmodelGenerator extends CCodeGenerator
             $command = $db->createCommand($sql);
             if (!$command->execute())
                 Yii::trace('The system didn\'t succeded to build the new table: ' . $tbl_name);
-            
+
             return true;
         }
         return true;
@@ -173,7 +173,7 @@ class CrudmodelGenerator extends CCodeGenerator
                             $table=Yii::app()->db->schema->getTable($tabModel->tableName());
                             $columns=$table->columns;
                             foreach($post as $i=>$builder){
-                                $giinius=  GiiniusBuilder::model()->findByPk($i);
+                                $giinius = GiiniusBuilder::model()->findByColumnModel($model->model, $builder['attribute']);
                                 if($giinius){
                                     $giinius->attributes=$builder;
                                     $giinius->model=$model->model;
