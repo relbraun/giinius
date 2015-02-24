@@ -186,6 +186,7 @@ class CrudmodelCode extends CCodeModel
 
 
         $tableName = $this->_table->name;
+        $relationClassName = $this->generateClassName($this->_table->name);
         $className = $this->_modelClass;
         $params = array(
             'tableName' => $tableName,
@@ -193,7 +194,7 @@ class CrudmodelCode extends CCodeModel
             'columns' => $this->_table->columns,
             'labels' => $this->generateLabels($this->_table),
             'rules' => $this->generateRules($this->_table),
-            'relations' => isset($this->relations[$className]) ? $this->relations[$className] : array(),
+            'relations' => isset($this->relations[$relationClassName]) ? $this->relations[$relationClassName] : array(),
             'connectionId' => $this->connectionId,
         );
         $modelPath = strpos($this->model, '.') > 0 ? $this->model : $this->modelPath;
@@ -419,7 +420,7 @@ class CrudmodelCode extends CCodeModel
                         return "echo \$form->textarea(\$model, '{$column->name}', array('class' => 'form-control {$builder->css}'))";
                         break;
                     case 'checkbox':
-                        return "echo \$form->checkBox(\$model, '{$column->name}', array('class' => {$builder->css}))";
+                        return "echo \$form->checkBox(\$model, '{$column->name}', array('class' => '{$builder->css}'))";
                         break;
                     case 'file':
                         return "echo \$form->fileField(\$model, '{$column->name}', array('class' => 'form-control {$builder->css}'))";
@@ -660,8 +661,10 @@ class CrudmodelCode extends CCodeModel
 
     protected function generateRelations()
     {
-        if (!$this->buildRelations)
+        if (!$this->buildRelations) {
+
             return array();
+        }
         $relations = array();
         foreach (Yii::app()->{$this->connectionId}->schema->getTables() as $table) {
             if ($this->tablePrefix != '' && strpos($table->name, $this->tablePrefix) !== 0)
