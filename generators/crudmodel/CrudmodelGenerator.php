@@ -189,12 +189,18 @@ class CrudmodelGenerator extends CCodeGenerator
                                 if($saved){
                                     unset($columns[$giinius->attribute]);
                                 }
+                                else{
+                                    Yii::log(CVarDumper::dumpAsString($giinius->errors,10,false),CLogger::LEVEL_ERROR,'giinius');
+                                }
                             }
                             foreach ($columns as $colName => $column) {
                                 $giinius=new GiiniusBuilder;
                                 $giinius->autoFillFieldType($model->model,$column);
                                 $giinius->sorter=$counter;
-                                $giinius->save();
+                                if(!$giinius->save()){
+                                    Yii::log(CVarDumper::dumpAsString($giinius->errors,10,false),CLogger::LEVEL_ERROR,'giinius');
+                                }
+
                                 $counter++;
                             }
                         }
