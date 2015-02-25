@@ -205,6 +205,43 @@ class GiiniusBuilder extends CActiveRecord implements IBehavior
         return self::model()->findByAttributes(array('model' => $model, 'attribute' => $column));
     }
 
+    /**
+     * @param $models array
+     */
+    public static function fillRestColumns(& $models)
+    {
+        if(empty($models)){
+            return;
+        }
+        $modelClass = new $models[0]->model;
+
+        $tableName = $modelClass->tableName();
+        /** @var CDbTableSchema $table */
+        $table = Yii::app()->db->schema->getTable($tableName);
+        $colNames = $table->getColumnNames();
+
+        $returnCols = array_filter($colNames, function ($v) use($models){
+
+        foreach($models as $model){
+
+            if($model->attribute == $v){
+
+                return false;
+            }
+        }
+            return true;
+       });
+        foreach($returnCols as $column){
+            $mod = new GiiniusBuilder;
+            $mod->attribute = $column;
+            if($table->getColumn($column)->autoIncrement){
+                $mod->field_type='AI';
+            }
+            $models[] = $mod;
+        }
+
+    }
+
     /********************** BEHAVIOR*************************************/
     public function attach($owner)
     {

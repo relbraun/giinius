@@ -40,19 +40,19 @@ class CrudmodelGenerator extends CCodeGenerator
                  $this->renderPartial('error');
                  return;
             }
-            $tbl=Yii::app()->db->schema->getTable($m->tableName());
+            $tbl = Yii::app()->db->schema->getTable($m->tableName());
             $columns = $tbl->columns;
             foreach($columns as $col){
 
-                 $mod=new GiiniusBuilder;
-                 $mod->attribute=$col->name;
+                 $mod = new GiiniusBuilder;
+                 $mod->attribute = $col->name;
                  if($col->autoIncrement){
                      $mod->field_type='AI';
                  }
-                 $models[]=$mod;
-
+                 $models[] = $mod;
             }
         }
+        GiiniusBuilder::fillRestColumns($models);
         $this->renderPartial('formBuilder', array('models' => $models));
     }
 
@@ -194,9 +194,9 @@ class CrudmodelGenerator extends CCodeGenerator
                                 }
                             }
                             foreach ($columns as $colName => $column) {
-                                $giinius=new GiiniusBuilder;
+                                $giinius = new GiiniusBuilder;
                                 $giinius->autoFillFieldType($model->model,$column);
-                                $giinius->sorter=$counter;
+                                $giinius->sorter = $counter;
                                 if(!$giinius->save()){
                                     Yii::log(CVarDumper::dumpAsString($giinius->errors,10,false),CLogger::LEVEL_ERROR,'giinius');
                                 }
@@ -204,8 +204,8 @@ class CrudmodelGenerator extends CCodeGenerator
                                 $counter++;
                             }
                         }
-            $giiniusBuilder= GiiniusBuilder::model()->findAllByAttributes(array('model' => $model->model));
-            $model->builder=$giiniusBuilder;
+            $giiniusBuilder = GiiniusBuilder::model()->findAllByAttributes(array('model' => $model->model));
+            $model->builder = $giiniusBuilder;
 			if($model->validate())
 			{
 				$model->saveStickyAttributes();
